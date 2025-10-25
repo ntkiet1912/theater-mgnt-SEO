@@ -1,4 +1,6 @@
 package com.theatermgnt.theatermgnt.enums;
 
 public enum AccountType {
+    USER,
+    CUSTOMER
 }

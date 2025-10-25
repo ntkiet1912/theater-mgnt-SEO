@@ -1,9 +1,7 @@
 package com.theatermgnt.theatermgnt.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.theatermgnt.theatermgnt.enums.Gender;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -14,11 +12,19 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-public class Users {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
-    String username;
-    String password;
+    String accountId;
+    String cinemaId;
+
+    String firstName;
+    String lastName;
+    String jobTitle;
+    String address;
+
+    @Enumerated(EnumType.STRING)
+    Gender gender;
 
 }

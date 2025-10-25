@@ -1,13 +1,11 @@
 package com.theatermgnt.theatermgnt.entity;
 
-
-import com.theatermgnt.theatermgnt.enums.Gender;
+import com.theatermgnt.theatermgnt.enums.AccountType;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.Instant;
-import java.time.LocalDate;
 
 @Setter
 @Getter
@@ -16,18 +14,19 @@ import java.time.LocalDate;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-public class Customer {
+public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
-    String accountId;
-    String firstName;
-    String lastName;
-    String address;
+    String email;
+    String username;
+    String password;
+    String phoneNumber;
 
     @Enumerated(EnumType.STRING)
-    Gender gender;
+    AccountType accountType;
 
-    LocalDate dob;
-
+    Boolean isActive;
+    Instant createdAt;
+    Instant updatedAt;
 }

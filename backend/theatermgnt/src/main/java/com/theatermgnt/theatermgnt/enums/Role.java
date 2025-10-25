@@ -1,5 +1,6 @@
 package com.theatermgnt.theatermgnt.enums;
 
-public enum Account_Type {
-
+public enum Role {
+    ADMIN,
+    USER
 }
