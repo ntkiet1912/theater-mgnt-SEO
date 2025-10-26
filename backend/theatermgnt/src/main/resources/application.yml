@@ -16,5 +16,6 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+        use_server_side_prepared_statements: false
 jwt:
   signerKey: "+PAV/uNVIsN2N1peTkAViUZSSc+t8/wOZQDw8M2+HxBD/2dFy9segSiMPHBr+q97"
