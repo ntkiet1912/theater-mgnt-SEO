@@ -18,15 +18,7 @@ import java.util.Objects;
 public class GlobalExceptionHandler {
     private static final String MIN_ATTRIBUTE = "min";
 
-    @ExceptionHandler(value = Exception.class)
-    ResponseEntity<ApiResponse> handlingRuntimeException(RuntimeException exception){
-        ErrorCode errorCode = ErrorCode.UNCATEGORIZED_EXCEPTION;
-        return ResponseEntity.badRequest()
-                .body(ApiResponse.builder()
-                        .code(errorCode.getCode())
-                        .message(errorCode.getMessage())
-                        .build());
-    }
+
 
     @ExceptionHandler(value = AppException.class)
     ResponseEntity<ApiResponse> handlingAppException(AppException exception){
@@ -79,6 +71,15 @@ public class GlobalExceptionHandler {
                         .build());
     }
 
+    @ExceptionHandler(value = Exception.class)
+    ResponseEntity<ApiResponse> handlingRuntimeException(RuntimeException exception){
+        ErrorCode errorCode = ErrorCode.UNCATEGORIZED_EXCEPTION;
+        return ResponseEntity.badRequest()
+                .body(ApiResponse.builder()
+                        .code(errorCode.getCode())
+                        .message(errorCode.getMessage())
+                        .build());
+    }
     private String mapAttribute(String message, Map<String,Object> attributes){
         // Get all attributes of annotation, ex: min, max, ...
         for(Map.Entry<String, Object> entry : attributes.entrySet()){
@@ -88,4 +89,6 @@ public class GlobalExceptionHandler {
         }
         return message;
     }
+
+
 }

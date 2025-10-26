@@ -16,11 +16,16 @@ import java.time.LocalDate;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
+@Table(name = "customers")
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
-    String accountId;
+
+    @OneToOne
+    @JoinColumn(name="account_id", referencedColumnName = "id")
+    Account account;
+
     String firstName;
     String lastName;
     String address;

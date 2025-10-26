@@ -1,7 +1,7 @@
 package com.theatermgnt.theatermgnt.mapper;
 
 import com.theatermgnt.theatermgnt.dto.request.CustomerAccountCreationRequest;
-import com.theatermgnt.theatermgnt.dto.response.AccountResponse;
+import com.theatermgnt.theatermgnt.dto.response.CustomerAccountResponse;
 import com.theatermgnt.theatermgnt.entity.Account;
 import com.theatermgnt.theatermgnt.entity.Customer;
 import org.mapstruct.Mapper;
@@ -18,8 +18,12 @@ public interface AccountMapper {
     Account toAccount(CustomerAccountCreationRequest request);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "accountId", ignore = true)
+    @Mapping(target = "account", ignore = true)
     Customer toCustomer(CustomerAccountCreationRequest request);
 
-    AccountResponse toAccountResponse(Account account);
+    @Mapping(source = "account.id", target = "accountId")
+    @Mapping(source = "account.email", target = "email")
+    @Mapping(source = "account.username", target = "username")
+    @Mapping(source = "account.phoneNumber", target = "phoneNumber")
+    CustomerAccountResponse toCustomerAccountResponse(Customer customer);
 }

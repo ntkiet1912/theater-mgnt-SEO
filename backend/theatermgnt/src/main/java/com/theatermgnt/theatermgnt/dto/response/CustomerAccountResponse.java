@@ -1,4 +1,4 @@
-package com.theatermgnt.theatermgnt.dto.request;
+package com.theatermgnt.theatermgnt.dto.response;
 
 import com.theatermgnt.theatermgnt.enums.Gender;
 import lombok.*;
@@ -11,7 +11,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CustomerAccountCreationRequest {
+public class CustomerAccountResponse {
+    String accountId;
     String username;
     String password;
     String email;
