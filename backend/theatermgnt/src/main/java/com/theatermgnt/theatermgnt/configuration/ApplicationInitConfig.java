@@ -21,7 +21,7 @@ import java.util.HashSet;
 @Slf4j
 public class ApplicationInitConfig {
 
-    private PasswordEncoder passwordEncoder;
+//    private PasswordEncoder passwordEncoder;
 
     @Bean
     @ConditionalOnProperty(
@@ -37,7 +37,7 @@ public class ApplicationInitConfig {
 
                 Account account = Account.builder()
                         .username("admin")
-                        .password(passwordEncoder.encode("admin"))
+//                        .password(passwordEncoder.encode("admin"))
                         .build();
                 accountRepository.save(account);
                 log.warn("Admin account has been created with default password: admin, please change it");
