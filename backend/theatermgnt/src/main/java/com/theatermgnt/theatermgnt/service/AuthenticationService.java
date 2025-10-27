@@ -1,4 +1,3 @@
 package com.theatermgnt.theatermgnt.service;
 
-public class AuthenticationService {
-}
+public class AuthenticationService {}

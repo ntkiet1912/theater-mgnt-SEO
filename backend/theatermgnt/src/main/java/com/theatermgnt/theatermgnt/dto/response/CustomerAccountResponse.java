@@ -1,10 +1,11 @@
 package com.theatermgnt.theatermgnt.dto.response;
 
+import java.time.LocalDate;
+
 import com.theatermgnt.theatermgnt.enums.Gender;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor

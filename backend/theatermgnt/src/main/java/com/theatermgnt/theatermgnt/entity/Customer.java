@@ -1,13 +1,13 @@
 package com.theatermgnt.theatermgnt.entity;
 
+import java.time.LocalDate;
+
+import jakarta.persistence.*;
 
 import com.theatermgnt.theatermgnt.enums.Gender;
-import jakarta.persistence.*;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.time.Instant;
-import java.time.LocalDate;
 
 @Setter
 @Getter
@@ -23,7 +23,7 @@ public class Customer {
     String id;
 
     @OneToOne
-    @JoinColumn(name="account_id", referencedColumnName = "id")
+    @JoinColumn(name = "account_id", referencedColumnName = "id")
     Account account;
 
     String firstName;
@@ -34,5 +34,4 @@ public class Customer {
     Gender gender;
 
     LocalDate dob;
-
 }

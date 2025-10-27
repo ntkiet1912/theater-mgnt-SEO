@@ -1,14 +1,17 @@
 package com.theatermgnt.theatermgnt.entity;
 
-import com.theatermgnt.theatermgnt.enums.AccountType;
+import java.time.Instant;
+
 import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.Instant;
+import com.theatermgnt.theatermgnt.enums.AccountType;
+
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Setter
 @Getter
@@ -23,6 +26,7 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
+
     String email;
     String username;
     String password;

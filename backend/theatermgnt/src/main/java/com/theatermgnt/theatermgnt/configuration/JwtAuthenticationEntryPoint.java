@@ -1,4 +1,3 @@
 package com.theatermgnt.theatermgnt.configuration;
 
-public class JwtAuthenticationEntryPoint {
-}
+public class JwtAuthenticationEntryPoint {}

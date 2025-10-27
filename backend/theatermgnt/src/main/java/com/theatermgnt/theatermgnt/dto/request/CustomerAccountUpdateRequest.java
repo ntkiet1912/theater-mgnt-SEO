@@ -1,4 +1,4 @@
-package com.theatermgnt.theatermgnt.dto.response;
+package com.theatermgnt.theatermgnt.dto.request;
 
 import java.time.LocalDate;
 
@@ -12,11 +12,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserAccountResponse {
-    String id;
-    String username;
-    String password;
-    String email;
+public class CustomerAccountUpdateRequest implements IAccountUpdateRequest {
     String phoneNumber;
     String firstName;
     String lastName;

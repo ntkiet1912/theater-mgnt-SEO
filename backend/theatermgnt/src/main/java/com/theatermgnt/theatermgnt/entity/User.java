@@ -1,7 +1,9 @@
 package com.theatermgnt.theatermgnt.entity;
 
-import com.theatermgnt.theatermgnt.enums.Gender;
 import jakarta.persistence.*;
+
+import com.theatermgnt.theatermgnt.enums.Gender;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -17,6 +19,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
+
     String accountId;
     String cinemaId;
 
@@ -27,5 +30,4 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     Gender gender;
-
 }
