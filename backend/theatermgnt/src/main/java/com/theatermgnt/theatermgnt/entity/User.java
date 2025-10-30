@@ -7,6 +7,8 @@ import com.theatermgnt.theatermgnt.enums.Gender;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.Set;
+
 @Setter
 @Getter
 @NoArgsConstructor
@@ -20,7 +22,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
 
-    String accountId;
+    @OneToOne
+    @JoinColumn(name = "account_id", referencedColumnName = "id")
+    Account account;
+
     String cinemaId;
 
     String firstName;
@@ -30,4 +35,7 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     Gender gender;
+
+    @ManyToMany
+    Set<Role> roles;
 }

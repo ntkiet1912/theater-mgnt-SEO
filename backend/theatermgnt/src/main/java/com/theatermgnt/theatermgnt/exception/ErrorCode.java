@@ -13,6 +13,8 @@ public enum ErrorCode {
     USER_EXISTED(1003, "User existed", HttpStatus.BAD_REQUEST),
     USER_NOT_EXISTED(1004, "User not existed", HttpStatus.NOT_FOUND),
     PHONE_NUMBER_EXISTED(1005, "User not existed", HttpStatus.BAD_REQUEST),
+    UNAUTHENTICATED(1006, "Unauthenticated", HttpStatus.UNAUTHORIZED), // 401
+
     ;
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {
