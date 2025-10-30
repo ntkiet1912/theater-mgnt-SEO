@@ -4,9 +4,7 @@ import org.mapstruct.*;
 
 import com.theatermgnt.theatermgnt.dto.request.IAccountCreationRequest;
 import com.theatermgnt.theatermgnt.dto.request.IAccountUpdateRequest;
-import com.theatermgnt.theatermgnt.dto.response.CustomerAccountResponse;
 import com.theatermgnt.theatermgnt.entity.Account;
-import com.theatermgnt.theatermgnt.entity.Customer;
 
 @Mapper(componentModel = "spring")
 public interface AccountMapper {
@@ -19,11 +17,6 @@ public interface AccountMapper {
     @Mapping(target = "accountType", ignore = true)
     Account toAccount(IAccountCreationRequest request);
 
-    @Mapping(source = "account.id", target = "accountId")
-    @Mapping(source = "account.email", target = "email")
-    @Mapping(source = "account.username", target = "username")
-    @Mapping(source = "account.phoneNumber", target = "phoneNumber")
-    CustomerAccountResponse toCustomerAccountResponse(Customer customer);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "email", ignore = true)

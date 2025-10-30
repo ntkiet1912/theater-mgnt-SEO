@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.theatermgnt.theatermgnt.dto.ApiResponse;
 import com.theatermgnt.theatermgnt.dto.request.CustomerAccountUpdateRequest;
-import com.theatermgnt.theatermgnt.dto.response.CustomerAccountResponse;
+import com.theatermgnt.theatermgnt.dto.response.AccountResponse;
 import com.theatermgnt.theatermgnt.service.CustomerService;
 
 import lombok.AccessLevel;
@@ -21,9 +21,9 @@ public class CustomerController {
     CustomerService customerService;
 
     @PutMapping("/{customerId}")
-    ApiResponse<CustomerAccountResponse> updateCustomer(
+    ApiResponse<AccountResponse> updateCustomer(
             @PathVariable String customerId, @RequestBody CustomerAccountUpdateRequest request) {
-        return ApiResponse.<CustomerAccountResponse>builder()
+        return ApiResponse.<AccountResponse>builder()
                 .result(customerService.updateCustomer(customerId, request))
                 .build();
     }

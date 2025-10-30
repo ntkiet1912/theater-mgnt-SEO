@@ -5,7 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.theatermgnt.theatermgnt.dto.request.CustomerAccountCreationRequest;
 import com.theatermgnt.theatermgnt.dto.request.CustomerAccountUpdateRequest;
-import com.theatermgnt.theatermgnt.dto.response.CustomerAccountResponse;
+import com.theatermgnt.theatermgnt.dto.response.AccountResponse;
 import com.theatermgnt.theatermgnt.entity.Account;
 import com.theatermgnt.theatermgnt.entity.Customer;
 import com.theatermgnt.theatermgnt.exception.AppException;
@@ -34,7 +34,7 @@ public class CustomerService {
     }
 
     @Transactional
-    public CustomerAccountResponse updateCustomer(String customerId, CustomerAccountUpdateRequest request) {
+    public AccountResponse updateCustomer(String customerId, CustomerAccountUpdateRequest request) {
         Customer customerToUpdate =
                 customerRepository.findById(customerId).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 

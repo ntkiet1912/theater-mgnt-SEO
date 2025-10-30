@@ -171,7 +171,7 @@ public class AuthenticationService {
 
         String scope = "";
         if(account.getAccountType() == AccountType.USER) {
-            User user = userRepository.findByAccountId(account.getUsername())
+            User user = userRepository.findByAccountId(account.getId())
                     .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
             if(user != null) {

@@ -1,6 +1,7 @@
 package com.theatermgnt.theatermgnt.dto.response;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 import com.theatermgnt.theatermgnt.enums.Gender;
 
@@ -12,8 +13,8 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserAccountResponse {
-    String id;
+public class AccountResponse {
+    String accountId;
     String username;
     String password;
     String email;
@@ -23,4 +24,5 @@ public class UserAccountResponse {
     String address;
     Gender gender;
     LocalDate dob;
+    Set<RoleResponse> roles;
 }

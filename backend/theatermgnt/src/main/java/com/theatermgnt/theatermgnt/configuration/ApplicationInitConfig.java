@@ -1,8 +1,10 @@
  package com.theatermgnt.theatermgnt.configuration;
 
+ import com.theatermgnt.theatermgnt.dto.request.UserAccountCreationRequest;
  import com.theatermgnt.theatermgnt.entity.Account;
  import com.theatermgnt.theatermgnt.enums.Role;
  import com.theatermgnt.theatermgnt.repository.AccountRepository;
+ import com.theatermgnt.theatermgnt.service.RegistrationService;
  import lombok.AccessLevel;
  import lombok.RequiredArgsConstructor;
  import lombok.experimental.FieldDefaults;
@@ -28,18 +30,16 @@
             prefix = "spring.datasource",
             name = "driver-class-name",
             havingValue = "org.postgresql.Driver")
-    ApplicationRunner applicationRunner(AccountRepository accountRepository) {
+    ApplicationRunner applicationRunner(AccountRepository accountRepository, RegistrationService registrationService) {
         return args -> {
             // Check existed username "admin"
             if(accountRepository.findByUsername("admin").isEmpty()) {
-//                var roles = new HashSet<String>();
-//                roles.add(Role.ADMIN.name());
 
-                Account account = Account.builder()
+                var adminRequest = UserAccountCreationRequest.builder()
                         .username("admin")
-                        .password(passwordEncoder.encode("admin"))
+                        .password("admin")
                         .build();
-                accountRepository.save(account);
+                registrationService.registerNewUser(adminRequest);
                 log.warn("Admin account has been created with default password: admin, please change it");
             }
         };

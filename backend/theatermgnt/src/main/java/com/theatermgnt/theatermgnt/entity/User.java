@@ -7,6 +7,7 @@ import com.theatermgnt.theatermgnt.enums.Gender;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 @Setter
@@ -32,6 +33,7 @@ public class User {
     String lastName;
     String jobTitle;
     String address;
+    LocalDate dob;
 
     @Enumerated(EnumType.STRING)
     Gender gender;
