@@ -31,7 +31,7 @@ public class UserService {
         user.setAccount(account);
 
         HashSet<Role> roles = new HashSet<>();
-        roleRepository.findById(PredefinedRole.USER_ROLE).ifPresent(roles::add);
+        roleRepository.findById(PredefinedRole.ADMIN_ROLE).ifPresent(roles::add);
         user.setRoles(roles);
         return userRepository.save(user);
     }

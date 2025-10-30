@@ -189,7 +189,7 @@ public class AuthenticationService {
                 .subject(account.getUsername())
                 .issueTime(new Date())
                 .expirationTime(new Date(
-                        Instant.now().plus(VALID_DURATION, ChronoUnit.MILLIS).toEpochMilli())
+                        Instant.now().plus(VALID_DURATION, ChronoUnit.SECONDS).toEpochMilli())
                 )
                 .jwtID(UUID.randomUUID().toString())
                 .claim("scope", scope)

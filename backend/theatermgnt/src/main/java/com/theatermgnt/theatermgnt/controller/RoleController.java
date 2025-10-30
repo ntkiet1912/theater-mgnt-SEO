@@ -27,6 +27,13 @@ public class RoleController {
                 .result(roleService.create(request))
                 .build();
     }
+    /// Update role
+    @PutMapping("/{roleId}")
+    ApiResponse<RoleResponse> updateRole(@PathVariable String roleId, @RequestBody RoleRequest request) {
+        return ApiResponse.<RoleResponse>builder()
+                .result(roleService.update(roleId,request))
+                .build();
+    }
     /// Get all roles
     @GetMapping
     ApiResponse<List<RoleResponse>> getAll() {

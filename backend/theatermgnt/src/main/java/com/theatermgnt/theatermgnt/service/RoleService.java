@@ -2,6 +2,7 @@ package com.theatermgnt.theatermgnt.service;
 
 import com.theatermgnt.theatermgnt.dto.request.RoleRequest;
 import com.theatermgnt.theatermgnt.dto.response.RoleResponse;
+import com.theatermgnt.theatermgnt.entity.Role;
 import com.theatermgnt.theatermgnt.exception.AppException;
 import com.theatermgnt.theatermgnt.exception.ErrorCode;
 import com.theatermgnt.theatermgnt.mapper.RoleMapper;
@@ -44,7 +45,7 @@ public class RoleService {
 
     /// UPDATE A ROLE
     public RoleResponse update(String roleId, RoleRequest request) {
-        var role = roleRepository.findById(roleId).orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_FOUND));
+        Role role = roleRepository.findById(roleId).orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_FOUND));
         roleMapper.updateRole(request, role);
 
         var permissions = permissionRepository.findAllById(request.getPermissions());

@@ -7,7 +7,6 @@ import com.theatermgnt.theatermgnt.entity.Role;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-import org.springframework.stereotype.Component;
 
 @Mapper(componentModel = "spring")
 public interface RoleMapper {
@@ -16,5 +15,6 @@ public interface RoleMapper {
 
     RoleResponse toRoleResponse(Role role);
 
+    @Mapping(target = "permissions", ignore = true)
     void updateRole(RoleRequest request, @MappingTarget Role role);
 }

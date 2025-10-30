@@ -8,12 +8,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.Instant;
+import java.util.Date;
 
 @Repository
 public interface InvalidatedTokenRepository extends JpaRepository<InvalidatedToken, String> {
     @Modifying
     @Transactional
     @Query("DELETE FROM InvalidatedToken it WHERE it.expiryTime < :now")
-    void deleteAllExpiredTokens(Instant now);
-
+    void deleteAllExpiredTokens(Date now);
 }
