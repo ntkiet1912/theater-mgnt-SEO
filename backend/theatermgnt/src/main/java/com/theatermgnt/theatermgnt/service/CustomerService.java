@@ -27,7 +27,8 @@ public class CustomerService {
     CustomerMapper customerMapper;
     AccountService accountService;
 
-    public Customer createCustomer(CustomerAccountCreationRequest request, Account account) {
+    public Customer createCustomerProfile(CustomerAccountCreationRequest request, Account account) {
+
         Customer customer = customerMapper.toCustomer(request);
         customer.setAccount(account);
         return customerRepository.save(customer);

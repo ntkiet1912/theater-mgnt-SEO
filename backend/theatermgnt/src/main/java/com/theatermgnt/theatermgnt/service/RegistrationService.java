@@ -11,7 +11,6 @@ import com.theatermgnt.theatermgnt.dto.response.AccountResponse;
 import com.theatermgnt.theatermgnt.entity.Account;
 import com.theatermgnt.theatermgnt.entity.Customer;
 import com.theatermgnt.theatermgnt.enums.AccountType;
-import com.theatermgnt.theatermgnt.mapper.AccountMapper;
 import com.theatermgnt.theatermgnt.mapper.CustomerMapper;
 
 import lombok.AccessLevel;
@@ -27,7 +26,6 @@ public class RegistrationService {
     AccountService accountService;
     CustomerService customerService;
     UserService userService;
-    AccountMapper accountMapper;
     CustomerMapper customerMapper;
     UserMapper userMapper;
 
@@ -36,16 +34,16 @@ public class RegistrationService {
         Account savedAccount = accountService.createAccount(request);
         savedAccount.setAccountType(AccountType.CUSTOMER);
 
-        Customer savedCustomer = customerService.createCustomer(request, savedAccount);
+        Customer savedCustomer = customerService.createCustomerProfile(request, savedAccount);
         return customerMapper.toCustomerAccountResponse(savedCustomer);
     }
 
     @Transactional
-    public AccountResponse registerNewUser(UserAccountCreationRequest request) {
+    public AccountResponse registerUserAccount(UserAccountCreationRequest request) {
         Account savedAccount = accountService.createAccount(request);
         savedAccount.setAccountType(AccountType.USER);
 
-        User savedUser = userService.createUser(request, savedAccount);
+        User savedUser = userService.createUserProfile(request, savedAccount);
         return userMapper.toUserAccountResponse(savedUser);
     }
 }

@@ -1,8 +1,6 @@
  package com.theatermgnt.theatermgnt.configuration;
 
  import com.theatermgnt.theatermgnt.dto.request.UserAccountCreationRequest;
- import com.theatermgnt.theatermgnt.entity.Account;
- import com.theatermgnt.theatermgnt.enums.Role;
  import com.theatermgnt.theatermgnt.repository.AccountRepository;
  import com.theatermgnt.theatermgnt.service.RegistrationService;
  import lombok.AccessLevel;
@@ -14,8 +12,6 @@
  import org.springframework.context.annotation.Bean;
  import org.springframework.context.annotation.Configuration;
  import org.springframework.security.crypto.password.PasswordEncoder;
-
- import java.util.HashSet;
 
  @Configuration
  @RequiredArgsConstructor
@@ -39,7 +35,7 @@
                         .username("admin")
                         .password("admin")
                         .build();
-                registrationService.registerNewUser(adminRequest);
+                registrationService.registerUserAccount(adminRequest);
                 log.warn("Admin account has been created with default password: admin, please change it");
             }
         };

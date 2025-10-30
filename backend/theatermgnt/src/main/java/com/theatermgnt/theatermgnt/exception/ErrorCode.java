@@ -12,8 +12,9 @@ public enum ErrorCode {
     UNAUTHORIZED(1002, "You do not have permissions", HttpStatus.FORBIDDEN), // 403
     USER_EXISTED(1003, "User existed", HttpStatus.BAD_REQUEST),
     USER_NOT_EXISTED(1004, "User not existed", HttpStatus.NOT_FOUND),
-    PHONE_NUMBER_EXISTED(1005, "User not existed", HttpStatus.BAD_REQUEST),
+    PHONE_NUMBER_EXISTED(1005, "Phone number has existed", HttpStatus.BAD_REQUEST),
     UNAUTHENTICATED(1006, "Unauthenticated", HttpStatus.UNAUTHORIZED), // 401
+    ROLE_NOT_FOUND(1007, "Role not found", HttpStatus.NOT_FOUND), // 401
 
     ;
 

@@ -1,5 +1,6 @@
 package com.theatermgnt.theatermgnt.controller;
 
+import com.theatermgnt.theatermgnt.dto.request.UserAccountCreationRequest;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,9 +25,16 @@ public class RegistrationController {
     RegistrationService registrationService;
 
     @PostMapping("/registration")
-    public ApiResponse<AccountResponse> registerAccount(@RequestBody CustomerAccountCreationRequest request) {
+    public ApiResponse<AccountResponse> registerCustomerAccount(@RequestBody CustomerAccountCreationRequest request) {
         return ApiResponse.<AccountResponse>builder()
                 .result(registrationService.registerCustomerAccount(request))
+                .build();
+    }
+
+    @PostMapping("/staff")
+    public ApiResponse<AccountResponse> registerUserAccount(@RequestBody UserAccountCreationRequest request) {
+        return ApiResponse.<AccountResponse>builder()
+                .result(registrationService.registerUserAccount(request))
                 .build();
     }
 }
