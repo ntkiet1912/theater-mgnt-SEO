@@ -18,11 +18,4 @@ import lombok.extern.slf4j.Slf4j;
 public class AccountController {
     AccountService accountService;
 
-    //    @PostMapping("/registration")
-    //    public ApiResponse<CustomerAccountResponse> createCustomerAccount(@RequestBody CustomerAccountCreationRequest
-    // request) {
-    //        return ApiResponse.<CustomerAccountResponse>builder()
-    //                .result(accountService.createCustomerAccount(request))
-    //                .build();
-    //    }
 }

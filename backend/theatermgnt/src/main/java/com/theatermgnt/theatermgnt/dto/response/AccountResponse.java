@@ -15,6 +15,8 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AccountResponse {
     String accountId;
+    String profileId; // = customerId or staffId
+    String accountType;
     String username;
     String password;
     String email;

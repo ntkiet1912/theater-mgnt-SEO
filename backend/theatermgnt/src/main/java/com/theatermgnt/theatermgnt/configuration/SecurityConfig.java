@@ -23,8 +23,8 @@ public class SecurityConfig {
             "/users", "/auth/token", "/auth/introspect", "/auth/logout", "/auth/refresh",
     };
 
-        @Autowired
-        private CustomJwtDecoder customJwtDecoder;
+    @Autowired
+    private CustomJwtDecoder customJwtDecoder;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -32,6 +32,7 @@ public class SecurityConfig {
                 .permitAll()
                 .anyRequest()
                 .authenticated());
+
 
         httpSecurity.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwtConfigurer -> jwtConfigurer
                         .decoder(customJwtDecoder)

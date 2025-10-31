@@ -1,10 +1,12 @@
 package com.theatermgnt.theatermgnt.mapper;
 
+import com.theatermgnt.theatermgnt.dto.request.CustomerAccountUpdateRequest;
 import com.theatermgnt.theatermgnt.dto.request.StaffAccountCreationRequest;
+import com.theatermgnt.theatermgnt.dto.request.StaffProfileUpdateRequest;
 import com.theatermgnt.theatermgnt.dto.response.AccountResponse;
+import com.theatermgnt.theatermgnt.entity.Customer;
 import com.theatermgnt.theatermgnt.entity.Staff;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.*;
 
 @Mapper(componentModel = "spring")
 public interface StaffMapper {
@@ -16,5 +18,11 @@ public interface StaffMapper {
     @Mapping(source = "account.email", target = "email")
     @Mapping(source = "account.username", target = "username")
     @Mapping(source = "account.phoneNumber", target = "phoneNumber")
+    @Mapping(source = "account.accountType", target = "accountType")
+    @Mapping(target = "profileId", source = "id")
     AccountResponse toStaffAccountResponse(Staff staff);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "roles", ignore = true)
+    void updateStaffProfile(@MappingTarget Staff staff, StaffProfileUpdateRequest request);
 }

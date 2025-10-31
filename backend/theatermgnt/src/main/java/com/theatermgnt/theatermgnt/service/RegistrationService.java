@@ -50,7 +50,7 @@ public class RegistrationService {
     @Transactional
     public AccountResponse registerStaffAccount(StaffAccountCreationRequest request) {
         Set<Role> roles = new HashSet<>();
-        roleRepository.findById(PredefinedRole.USER_ROLE).ifPresent(roles::add);
+        roleRepository.findById(PredefinedRole.STAFF_ROLE).ifPresent(roles::add);
         return internalCreateStaff(request,roles);
     }
 

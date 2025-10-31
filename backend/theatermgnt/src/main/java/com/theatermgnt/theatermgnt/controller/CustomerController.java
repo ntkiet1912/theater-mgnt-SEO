@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 
-@RequestMapping("/users")
 @RestController
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -20,11 +19,11 @@ import lombok.extern.slf4j.Slf4j;
 public class CustomerController {
     CustomerService customerService;
 
-    @PutMapping("/{customerId}")
-    ApiResponse<AccountResponse> updateCustomer(
-            @PathVariable String customerId, @RequestBody CustomerAccountUpdateRequest request) {
-        return ApiResponse.<AccountResponse>builder()
-                .result(customerService.updateCustomer(customerId, request))
-                .build();
-    }
+//    @PutMapping("/{customerId}")
+//    ApiResponse<AccountResponse> updateCustomer(
+//            @PathVariable String customerId, @RequestBody CustomerAccountUpdateRequest request) {
+//        return ApiResponse.<AccountResponse>builder()
+//                .result(customerService.updateCustomer(customerId, request))
+//                .build();
+//    }
 }
