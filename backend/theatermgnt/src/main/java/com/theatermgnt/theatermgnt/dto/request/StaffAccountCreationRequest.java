@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserAccountCreationRequest implements IAccountCreationRequest {
+public class StaffAccountCreationRequest implements IAccountCreationRequest {
     String username;
     String password;
     String email;

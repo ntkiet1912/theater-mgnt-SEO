@@ -17,8 +17,8 @@ import java.util.Set;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "users")
-public class User {
+@Table(name = "staffs")
+public class Staff {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;

@@ -1,6 +1,6 @@
 package com.theatermgnt.theatermgnt.controller;
 
-import com.theatermgnt.theatermgnt.dto.request.UserAccountCreationRequest;
+import com.theatermgnt.theatermgnt.dto.request.StaffAccountCreationRequest;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 
-@RequestMapping("/users")
 @RestController
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -24,17 +23,11 @@ import lombok.extern.slf4j.Slf4j;
 public class RegistrationController {
     RegistrationService registrationService;
 
-    @PostMapping("/registration")
+    @PostMapping("/register")
     public ApiResponse<AccountResponse> registerCustomerAccount(@RequestBody CustomerAccountCreationRequest request) {
         return ApiResponse.<AccountResponse>builder()
                 .result(registrationService.registerCustomerAccount(request))
                 .build();
     }
 
-    @PostMapping("/staff")
-    public ApiResponse<AccountResponse> registerUserAccount(@RequestBody UserAccountCreationRequest request) {
-        return ApiResponse.<AccountResponse>builder()
-                .result(registrationService.registerUserAccount(request))
-                .build();
-    }
 }

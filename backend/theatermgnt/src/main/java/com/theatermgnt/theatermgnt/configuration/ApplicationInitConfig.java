@@ -1,6 +1,6 @@
  package com.theatermgnt.theatermgnt.configuration;
 
- import com.theatermgnt.theatermgnt.dto.request.UserAccountCreationRequest;
+ import com.theatermgnt.theatermgnt.dto.request.StaffAccountCreationRequest;
  import com.theatermgnt.theatermgnt.enums.Role;
  import com.theatermgnt.theatermgnt.repository.AccountRepository;
  import com.theatermgnt.theatermgnt.service.RegistrationService;
@@ -33,14 +33,15 @@
         return args -> {
             // Check existed username "admin"
             if(accountRepository.findByUsername("admin").isEmpty()) {
-                var roles = new HashSet<String>();
-                roles.add(Role.ADMIN.name());
+//                var roles = new HashSet<String>();
+//                roles.add(Role.ADMIN.name());
 
-                UserAccountCreationRequest adminRequest = UserAccountCreationRequest.builder()
+                StaffAccountCreationRequest adminRequest = StaffAccountCreationRequest.builder()
                         .username("admin")
                         .password("admin")
                         .build();
-                registrationService.registerUserAccount(adminRequest);
+
+                registrationService.createAdminAccount(adminRequest);
                 log.warn("Admin account has been created with default password: admin, please change it");
             }
         };

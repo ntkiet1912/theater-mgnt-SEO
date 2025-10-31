@@ -13,13 +13,13 @@ import com.theatermgnt.theatermgnt.dto.response.AuthenticationResponse;
 import com.theatermgnt.theatermgnt.dto.response.IntrospectResponse;
 import com.theatermgnt.theatermgnt.entity.Account;
 import com.theatermgnt.theatermgnt.entity.InvalidatedToken;
-import com.theatermgnt.theatermgnt.entity.User;
+import com.theatermgnt.theatermgnt.entity.Staff;
 import com.theatermgnt.theatermgnt.enums.AccountType;
 import com.theatermgnt.theatermgnt.exception.AppException;
 import com.theatermgnt.theatermgnt.exception.ErrorCode;
 import com.theatermgnt.theatermgnt.repository.AccountRepository;
 import com.theatermgnt.theatermgnt.repository.InvalidatedTokenRepository;
-import com.theatermgnt.theatermgnt.repository.UserRepository;
+import com.theatermgnt.theatermgnt.repository.StaffRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -44,7 +44,7 @@ import java.util.UUID;
 @Slf4j
 public class AuthenticationService {
     AccountRepository accountRepository;
-    UserRepository userRepository;
+    StaffRepository staffRepository;
     InvalidatedTokenRepository invalidatedTokenRepository;
 
     @NonFinal
@@ -170,12 +170,12 @@ public class AuthenticationService {
         JWSHeader jwsHeader = new JWSHeader(JWSAlgorithm.HS512);
 
         String scope = "";
-        if(account.getAccountType() == AccountType.USER) {
-            User user = userRepository.findByAccountId(account.getId())
+        if(account.getAccountType() == AccountType.INTERNAL) {
+            Staff staff = staffRepository.findByAccountId(account.getId())
                     .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
-            if(user != null) {
-                scope = buildScope(user);
+            if(staff != null) {
+                scope = buildScope(staff);
             }else{
                 log.warn("Account {} has USER type but no matching User profile found.", account.getId());
             }
@@ -206,11 +206,11 @@ public class AuthenticationService {
         }
     }
     /// BUILD SCOPE
-    private String buildScope(User user) {
+    private String buildScope(Staff staff) {
         StringJoiner stringJoiner = new StringJoiner(" ");
 
-        if (!CollectionUtils.isEmpty(user.getRoles()))
-            user.getRoles().forEach(role -> {
+        if (!CollectionUtils.isEmpty(staff.getRoles()))
+            staff.getRoles().forEach(role -> {
                 stringJoiner.add("ROLE_" + role.getName());
 
                 if (!CollectionUtils.isEmpty(role.getPermissions()))
