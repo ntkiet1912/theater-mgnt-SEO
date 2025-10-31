@@ -1,19 +1,18 @@
 package com.theatermgnt.theatermgnt.dto.request;
 
-import java.time.LocalDate;
-
 import com.theatermgnt.theatermgnt.enums.Gender;
-
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CustomerAccountUpdateRequest implements IAccountUpdateRequest {
-    String phoneNumber;
+public class CustomerProfileUpdateRequest {
     String firstName;
     String lastName;
     String address;

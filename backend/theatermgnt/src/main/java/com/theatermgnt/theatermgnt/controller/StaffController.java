@@ -3,7 +3,7 @@ package com.theatermgnt.theatermgnt.controller;
 import com.theatermgnt.theatermgnt.dto.ApiResponse;
 import com.theatermgnt.theatermgnt.dto.request.StaffAccountCreationRequest;
 import com.theatermgnt.theatermgnt.dto.request.StaffProfileUpdateRequest;
-import com.theatermgnt.theatermgnt.dto.response.AccountResponse;
+import com.theatermgnt.theatermgnt.dto.response.StaffResponse;
 import com.theatermgnt.theatermgnt.service.RegistrationService;
 import com.theatermgnt.theatermgnt.service.StaffService;
 import lombok.AccessLevel;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("/users")
+@RequestMapping("/staffs")
 @RestController
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -24,37 +24,37 @@ public class StaffController {
     RegistrationService registrationService;
 
     @PostMapping
-    public ApiResponse<AccountResponse> createStaff(@RequestBody StaffAccountCreationRequest request) {
-        return ApiResponse.<AccountResponse>builder()
+    public ApiResponse<StaffResponse> createStaff(@RequestBody StaffAccountCreationRequest request) {
+        return ApiResponse.<StaffResponse>builder()
                 .result(registrationService.registerStaffAccount(request))
                 .build();
     }
 
     @GetMapping("/{staffId}")
-    public ApiResponse<AccountResponse> getStaffProfile(@PathVariable String staffId) {
-        return ApiResponse.<AccountResponse>builder()
+    public ApiResponse<StaffResponse> getStaffProfile(@PathVariable String staffId) {
+        return ApiResponse.<StaffResponse>builder()
                 .result(staffService.getStaffProfile(staffId))
                 .build();
     }
 
     @GetMapping
-    public ApiResponse<List<AccountResponse>> getAll() {
-        return ApiResponse.<List<AccountResponse>>builder()
+    public ApiResponse<List<StaffResponse>> getAll() {
+        return ApiResponse.<List<StaffResponse>>builder()
                 .result(staffService.getAll())
                 .build();
     }
 
     @GetMapping("/myInfo")
-    public ApiResponse<AccountResponse> getMyInfo() {
-        return ApiResponse.<AccountResponse>builder()
+    public ApiResponse<StaffResponse> getMyInfo() {
+        return ApiResponse.<StaffResponse>builder()
                 .result(staffService.getMyInfo())
                 .build();
     }
 
     @PutMapping("/{staffId}")
-    public ApiResponse<AccountResponse> updateStaffProfile(
+    public ApiResponse<StaffResponse> updateStaffProfile(
             @PathVariable String staffId, @RequestBody StaffProfileUpdateRequest request) {
-        return ApiResponse.<AccountResponse>builder()
+        return ApiResponse.<StaffResponse>builder()
                 .result(staffService.updateStaffProfile(staffId, request))
                 .build();
     }

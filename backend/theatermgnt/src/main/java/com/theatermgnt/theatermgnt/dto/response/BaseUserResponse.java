@@ -1,24 +1,23 @@
 package com.theatermgnt.theatermgnt.dto.response;
 
 import java.time.LocalDate;
-import java.util.Set;
 
 import com.theatermgnt.theatermgnt.enums.Gender;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AccountResponse {
+public abstract class BaseUserResponse {
+    /// Abstract class to be extended by CustomerResponse and StaffResponse
     String accountId;
-    String profileId; // = customerId or staffId
     String accountType;
     String username;
-    String password;
     String email;
     String phoneNumber;
     String firstName;
@@ -26,5 +25,4 @@ public class AccountResponse {
     String address;
     Gender gender;
     LocalDate dob;
-    Set<RoleResponse> roles;
 }

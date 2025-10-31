@@ -1,14 +1,12 @@
 package com.theatermgnt.theatermgnt.controller;
 
-import com.theatermgnt.theatermgnt.dto.request.StaffAccountCreationRequest;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.theatermgnt.theatermgnt.dto.ApiResponse;
 import com.theatermgnt.theatermgnt.dto.request.CustomerAccountCreationRequest;
-import com.theatermgnt.theatermgnt.dto.response.AccountResponse;
+import com.theatermgnt.theatermgnt.dto.response.BaseUserResponse;
 import com.theatermgnt.theatermgnt.service.RegistrationService;
 
 import lombok.AccessLevel;
@@ -24,8 +22,8 @@ public class RegistrationController {
     RegistrationService registrationService;
 
     @PostMapping("/register")
-    public ApiResponse<AccountResponse> registerCustomerAccount(@RequestBody CustomerAccountCreationRequest request) {
-        return ApiResponse.<AccountResponse>builder()
+    public ApiResponse<BaseUserResponse> registerCustomerAccount(@RequestBody CustomerAccountCreationRequest request) {
+        return ApiResponse.<BaseUserResponse>builder()
                 .result(registrationService.registerCustomerAccount(request))
                 .build();
     }

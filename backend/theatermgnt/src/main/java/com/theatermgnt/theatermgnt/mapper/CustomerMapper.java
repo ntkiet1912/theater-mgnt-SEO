@@ -1,10 +1,11 @@
 package com.theatermgnt.theatermgnt.mapper;
 
+import com.theatermgnt.theatermgnt.dto.request.CustomerProfileUpdateRequest;
+import com.theatermgnt.theatermgnt.dto.response.CustomerResponse;
 import org.mapstruct.*;
 
 import com.theatermgnt.theatermgnt.dto.request.CustomerAccountCreationRequest;
-import com.theatermgnt.theatermgnt.dto.request.CustomerAccountUpdateRequest;
-import com.theatermgnt.theatermgnt.dto.response.AccountResponse;
+import com.theatermgnt.theatermgnt.dto.response.BaseUserResponse;
 import com.theatermgnt.theatermgnt.entity.Customer;
 
 @Mapper(componentModel = "spring")
@@ -18,10 +19,10 @@ public interface CustomerMapper {
     @Mapping(source = "account.email", target = "email")
     @Mapping(source = "account.username", target = "username")
     @Mapping(source = "account.phoneNumber", target = "phoneNumber")
-    AccountResponse toCustomerAccountResponse(Customer customer);
+    @Mapping(source = "id", target = "customerId")
+    CustomerResponse toCustomerResponse(Customer customer);
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "account", ignore = true)
+
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void updateCustomer(@MappingTarget Customer customer, CustomerAccountUpdateRequest request);
+    void updateCustomerProfile(@MappingTarget Customer customer, CustomerProfileUpdateRequest request);
 }

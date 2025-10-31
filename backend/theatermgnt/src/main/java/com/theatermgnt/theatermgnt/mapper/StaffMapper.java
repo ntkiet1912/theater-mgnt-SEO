@@ -1,10 +1,9 @@
 package com.theatermgnt.theatermgnt.mapper;
 
-import com.theatermgnt.theatermgnt.dto.request.CustomerAccountUpdateRequest;
 import com.theatermgnt.theatermgnt.dto.request.StaffAccountCreationRequest;
 import com.theatermgnt.theatermgnt.dto.request.StaffProfileUpdateRequest;
-import com.theatermgnt.theatermgnt.dto.response.AccountResponse;
-import com.theatermgnt.theatermgnt.entity.Customer;
+import com.theatermgnt.theatermgnt.dto.response.BaseUserResponse;
+import com.theatermgnt.theatermgnt.dto.response.StaffResponse;
 import com.theatermgnt.theatermgnt.entity.Staff;
 import org.mapstruct.*;
 
@@ -19,8 +18,8 @@ public interface StaffMapper {
     @Mapping(source = "account.username", target = "username")
     @Mapping(source = "account.phoneNumber", target = "phoneNumber")
     @Mapping(source = "account.accountType", target = "accountType")
-    @Mapping(target = "profileId", source = "id")
-    AccountResponse toStaffAccountResponse(Staff staff);
+    @Mapping(source = "id", target = "staffId")
+    StaffResponse toStaffResponse(Staff staff);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "roles", ignore = true)
