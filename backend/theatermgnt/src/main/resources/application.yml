@@ -9,6 +9,7 @@ spring:
     username: postgres
     password: 3kSE347@123
     driver-class-name: org.postgresql.Driver
+
   jpa:
     hibernate:
       ddl-auto: update
