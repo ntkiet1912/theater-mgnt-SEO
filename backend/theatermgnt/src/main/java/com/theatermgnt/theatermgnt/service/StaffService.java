@@ -64,7 +64,7 @@ public class StaffService {
     }
 
     /// GET MY INFO
-    public AccountResponse getMyInfo(String staffId) {
+    public AccountResponse getMyInfo() {
         var context = SecurityContextHolder.getContext();
         String accountId = context.getAuthentication().getName();
 
@@ -83,7 +83,9 @@ public class StaffService {
         var roles = roleRepository.findAllById(request.getRoles());
         staffToUpdate.setRoles(new HashSet<>(roles));
         return staffMapper.toStaffAccountResponse(staffRepository.save(staffToUpdate));
-
     }
-
+    /// DELETE STAFF
+    public void deleteStaff(String staffId) {
+        staffRepository.deleteById(staffId);
+    }
 }

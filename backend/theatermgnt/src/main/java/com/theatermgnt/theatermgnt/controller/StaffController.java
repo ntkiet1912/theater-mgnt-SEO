@@ -44,11 +44,23 @@ public class StaffController {
                 .build();
     }
 
+    @GetMapping("/myInfo")
+    public ApiResponse<AccountResponse> getMyInfo() {
+        return ApiResponse.<AccountResponse>builder()
+                .result(staffService.getMyInfo())
+                .build();
+    }
+
     @PutMapping("/{staffId}")
     public ApiResponse<AccountResponse> updateStaffProfile(
             @PathVariable String staffId, @RequestBody StaffProfileUpdateRequest request) {
         return ApiResponse.<AccountResponse>builder()
                 .result(staffService.updateStaffProfile(staffId, request))
                 .build();
+    }
+    @DeleteMapping("/{staffId}")
+    public ApiResponse<Void> deleteStaff(@PathVariable String staffId) {
+        staffService.deleteStaff(staffId);
+        return ApiResponse.<Void>builder().build();
     }
 }
