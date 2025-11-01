@@ -22,6 +22,8 @@ export function Login() {
   const [error, setError] = useState("")
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setIsLoading(true)
+    setError("")
 
     try {
       const response = await login(username, password)
@@ -30,6 +32,8 @@ export function Login() {
     } catch (error) {
       console.error("Login failed:", error)
       setError("Invalid username or password")
+    } finally {
+      setIsLoading(false)
     }
   }
 

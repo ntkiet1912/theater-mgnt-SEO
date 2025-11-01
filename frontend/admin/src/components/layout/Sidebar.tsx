@@ -17,11 +17,11 @@ export function Sidebar() {
   };
 
   const menuItems = [
-    { id: "overview", label: "Tổng quan", icon: LayoutDashboard, path: ROUTES.DASHBOARD },
-    { id: "movies", label: "Quản lý phim", icon: Film, path: ROUTES.MOVIES },
-    { id: "showtimes", label: "Lịch chiếu", icon: Calendar, path: ROUTES.SHOWTIMES },
-    { id: "theaters", label: "Phòng chiếu", icon: Theater, path: ROUTES.THEATERS },
-    { id: "tickets", label: "Vé đã bán", icon: Ticket, path: ROUTES.TICKETS },
+    { id: "overview", label: "Dashboard", icon: LayoutDashboard, path: ROUTES.DASHBOARD },
+    { id: "movies", label: "Manage Movies", icon: Film, path: ROUTES.MOVIES },
+    { id: "showtimes", label: "Showtimes", icon: Calendar, path: ROUTES.SHOWTIMES },
+    { id: "theaters", label: "Theaters", icon: Theater, path: ROUTES.THEATERS },
+    { id: "tickets", label: "Sold Tickets", icon: Ticket, path: ROUTES.TICKETS },
   ]
 
   return (
@@ -67,14 +67,14 @@ export function Sidebar() {
           </button>
           <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-sidebar-foreground hover:bg-sidebar-accent/50 transition-colors">
             <Settings className="h-4 w-4" />
-            Cài đặt
+            Settings
           </button>
           <button 
             onClick={handleLogout}
             className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-sidebar-foreground hover:bg-sidebar-accent/50 transition-colors"
           >
             <LogOut className="h-4 w-4" />
-            Đăng xuất
+            Logout
           </button>
         </div>
       </nav>
