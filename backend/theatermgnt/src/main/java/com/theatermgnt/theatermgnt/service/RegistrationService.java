@@ -8,6 +8,7 @@ import com.theatermgnt.theatermgnt.entity.Role;
 import com.theatermgnt.theatermgnt.entity.Staff;
 import com.theatermgnt.theatermgnt.mapper.StaffMapper;
 import com.theatermgnt.theatermgnt.repository.RoleRepository;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,6 +49,7 @@ public class RegistrationService {
 
 
     /// Create staff account
+    @PreAuthorize("hasRole('ADMIN')")
     @Transactional
     public StaffResponse registerStaffAccount(StaffAccountCreationRequest request) {
         Set<Role> roles = new HashSet<>();

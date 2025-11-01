@@ -2,7 +2,7 @@
 server:
   port: 8080
   servlet:
-    context-path: /theater-mgnt
+    context-path: /api/theater-mgnt
 
 spring:
   application:
