@@ -1,13 +1,19 @@
+
 server:
   port: 8080
   servlet:
-    context-path: /movieTheaterManagement
+    context-path: /api/theater-mgnt
 
 spring:
+  application:
+      name: theater-mgnt
   datasource:
-    url: jdbc:postgresql://db.zpjvpfkwbcnszfzdwynf.supabase.co:5432/postgres
+#    url: jdbc:postgresql://db.zpjvpfkwbcnszfzdwynf.supabase.co:5432/postgres
+#    username: postgres
+#    password: 3kSE347@123
+    url: jdbc:postgresql://localhost:5432/theater-mgnt
     username: postgres
-    password: 3kSE347@123
+    password: postgres
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -16,3 +22,7 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+jwt:
+  signerKey: "+PAV/uNVIsN2N1peTkAViUZSSc+t8/wOZQDw8M2+HxBD/2dFy9segSiMPHBr+q97"
+  refreshable-duration: 36000
+  valid-duration: 3600

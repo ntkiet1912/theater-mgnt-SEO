@@ -1,0 +1,30 @@
+package com.theatermgnt.theatermgnt.mapper;
+
+import org.mapstruct.*;
+
+import com.theatermgnt.theatermgnt.dto.request.IAccountCreationRequest;
+import com.theatermgnt.theatermgnt.dto.request.IAccountUpdateRequest;
+import com.theatermgnt.theatermgnt.entity.Account;
+
+@Mapper(componentModel = "spring")
+public interface AccountMapper {
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "isActive", constant = "true")
+    @Mapping(target = "password", ignore = true) // Password is handled separately
+    @Mapping(target = "accountType", ignore = true)
+    Account toAccount(IAccountCreationRequest request);
+
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "email", ignore = true)
+    @Mapping(target = "username", ignore = true)
+    @Mapping(target = "password", ignore = true) // Password is handled separately
+    @Mapping(target = "accountType", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void updateAccount(@MappingTarget Account account, IAccountUpdateRequest request);
+}

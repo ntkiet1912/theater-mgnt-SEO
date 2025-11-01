@@ -1,24 +1,24 @@
 package com.theatermgnt.theatermgnt.entity;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-@Setter
+import java.time.Instant;
+import java.util.Date;
+
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
+@Setter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-public class Users {
+@Table(name = "invalidated_tokens")
+public class InvalidatedToken {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     String id;
-    String username;
-    String password;
-
+    Date expiryTime;
 }

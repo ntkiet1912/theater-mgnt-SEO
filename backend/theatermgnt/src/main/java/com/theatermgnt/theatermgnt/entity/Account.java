@@ -1,0 +1,45 @@
+package com.theatermgnt.theatermgnt.entity;
+
+import java.time.Instant;
+
+import jakarta.persistence.*;
+
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.theatermgnt.theatermgnt.enums.AccountType;
+
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@EntityListeners(AuditingEntityListener.class)
+@Entity
+@Table(name = "accounts")
+public class Account {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    String id;
+
+    String email;
+    String username;
+    String password;
+    String phoneNumber;
+
+    @Enumerated(EnumType.STRING)
+    AccountType accountType;
+
+    Boolean isActive;
+
+    @CreatedDate
+    Instant createdAt;
+
+    @LastModifiedDate
+    Instant updatedAt;
+}
