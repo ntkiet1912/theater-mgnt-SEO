@@ -1,9 +1,8 @@
  package com.theatermgnt.theatermgnt.configuration;
 
- import com.theatermgnt.theatermgnt.dto.request.StaffAccountCreationRequest;
- import com.theatermgnt.theatermgnt.enums.Role;
- import com.theatermgnt.theatermgnt.repository.AccountRepository;
- import com.theatermgnt.theatermgnt.service.RegistrationService;
+ import com.theatermgnt.theatermgnt.staff.dto.request.StaffAccountCreationRequest;
+ import com.theatermgnt.theatermgnt.account.repository.AccountRepository;
+ import com.theatermgnt.theatermgnt.authentication.service.RegistrationService;
  import lombok.AccessLevel;
  import lombok.RequiredArgsConstructor;
  import lombok.experimental.FieldDefaults;
@@ -13,8 +12,6 @@
  import org.springframework.context.annotation.Bean;
  import org.springframework.context.annotation.Configuration;
  import org.springframework.security.crypto.password.PasswordEncoder;
-
- import java.util.HashSet;
 
  @Configuration
  @RequiredArgsConstructor

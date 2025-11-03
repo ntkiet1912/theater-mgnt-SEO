@@ -1,6 +1,6 @@
 package com.theatermgnt.theatermgnt.controller;
 
-import com.theatermgnt.theatermgnt.dto.ApiResponse;
+import com.theatermgnt.theatermgnt.common.dto.response.ApiResponse;
 import com.theatermgnt.theatermgnt.dto.request.CinemaCreationRequest;
 import com.theatermgnt.theatermgnt.dto.request.CinemaUpdateRequest;
 import com.theatermgnt.theatermgnt.dto.response.CinemaResponse;

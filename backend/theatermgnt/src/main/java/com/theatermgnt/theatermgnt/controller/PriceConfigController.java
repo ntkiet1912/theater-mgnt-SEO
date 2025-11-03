@@ -1,12 +1,9 @@
 package com.theatermgnt.theatermgnt.controller;
 
-import com.theatermgnt.theatermgnt.dto.ApiResponse;
-import com.theatermgnt.theatermgnt.dto.request.PriceConfigCreationRequest;
+import com.theatermgnt.theatermgnt.common.dto.response.ApiResponse;
 import com.theatermgnt.theatermgnt.dto.request.PriceConfigCreationRequest;
 import com.theatermgnt.theatermgnt.dto.request.PriceConfigUpdateRequest;
 import com.theatermgnt.theatermgnt.dto.response.PriceConfigResponse;
-import com.theatermgnt.theatermgnt.dto.response.PriceConfigResponse;
-import com.theatermgnt.theatermgnt.service.PriceConfigService;
 import com.theatermgnt.theatermgnt.service.PriceConfigService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;

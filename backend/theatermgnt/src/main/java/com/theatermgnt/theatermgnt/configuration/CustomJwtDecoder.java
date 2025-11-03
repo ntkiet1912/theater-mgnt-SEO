@@ -1,8 +1,8 @@
  package com.theatermgnt.theatermgnt.configuration;
 
  import com.nimbusds.jose.JOSEException;
- import com.theatermgnt.theatermgnt.dto.request.IntrospectRequest;
- import com.theatermgnt.theatermgnt.service.AuthenticationService;
+ import com.theatermgnt.theatermgnt.authentication.dto.request.IntrospectRequest;
+ import com.theatermgnt.theatermgnt.authentication.service.AuthenticationService;
  import org.springframework.beans.factory.annotation.Autowired;
  import org.springframework.beans.factory.annotation.Value;
  import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
