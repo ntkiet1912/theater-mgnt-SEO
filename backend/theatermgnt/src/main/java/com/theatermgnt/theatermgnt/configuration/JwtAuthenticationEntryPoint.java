@@ -1,8 +1,8 @@
 package com.theatermgnt.theatermgnt.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.theatermgnt.theatermgnt.dto.ApiResponse;
-import com.theatermgnt.theatermgnt.exception.ErrorCode;
+import com.theatermgnt.theatermgnt.common.dto.response.ApiResponse;
+import com.theatermgnt.theatermgnt.common.exception.ErrorCode;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

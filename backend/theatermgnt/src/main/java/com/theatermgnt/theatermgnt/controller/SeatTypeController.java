@@ -1,13 +1,9 @@
 package com.theatermgnt.theatermgnt.controller;
 
-import com.theatermgnt.theatermgnt.dto.ApiResponse;
-import com.theatermgnt.theatermgnt.dto.request.CinemaCreationRequest;
-import com.theatermgnt.theatermgnt.dto.request.CinemaUpdateRequest;
+import com.theatermgnt.theatermgnt.common.dto.response.ApiResponse;
 import com.theatermgnt.theatermgnt.dto.request.SeatTypeCreationRequest;
 import com.theatermgnt.theatermgnt.dto.request.SeatTypeUpdateRequest;
-import com.theatermgnt.theatermgnt.dto.response.CinemaResponse;
 import com.theatermgnt.theatermgnt.dto.response.SeatTypeResponse;
-import com.theatermgnt.theatermgnt.service.CinemaService;
 import com.theatermgnt.theatermgnt.service.SeatTypeService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
