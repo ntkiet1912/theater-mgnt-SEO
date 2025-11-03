@@ -10,7 +10,6 @@ import java.util.TimeZone;
 @SpringBootApplication
 @EnableJpaAuditing
 @EnableScheduling
-
 public class TheatermgntApplication {
 
     public static void main(String[] args) {
