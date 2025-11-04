@@ -3,5 +3,6 @@ export const CONFIG = {
 }
 export const API = {
   LOGIN: "/auth/token",
-  MY_INFO: "/staff/myInfo",
+  MY_INFO: "staffs/myInfo",
+  UPDATE_STAFF: "/staffs/${staffId}",
 }

@@ -2,6 +2,7 @@ import LayoutDefault from "@/components/layout/LayoutDefault"
 import PrivateRoute from "@/components/PrivateRoute"
 import { DashboardOverview } from "@/pages/Dashboard/Overview"
 import { Login } from "@/pages/Login/Login"
+import { Profile } from "@/pages/Profile/StaffProfile"
 export const routes = [
   {
     path: "/login",
@@ -19,6 +20,10 @@ export const routes = [
           path: "/",
           element: <DashboardOverview />
         },
+        {
+          path: "/settings/profile",
+          element: <Profile />
+        },
         ]
       },
     ]
@@ -34,5 +39,8 @@ export const ROUTES = {
   MOVIES: "/dashboard/movies",
   SHOWTIMES: "/dashboard/showtimes", 
   THEATERS: "/dashboard/theaters",
-  TICKETS: "/dashboard/tickets"
+  TICKETS: "/dashboard/tickets",
+  SETTINGS_PROFILE: "/settings/profile",
+  SETTINGS_NOTIFICATIONS: "/settings/notifications",
+  SETTINGS_SECURITY: "/settings/security"
 } as const
