@@ -18,6 +18,7 @@ public class StaffProfileUpdateRequest{
     String jobTitle;
     String cinemaId;
     String address;
+    String avatarUrl;
     Gender gender;
     LocalDate dob;
     List<String> roles;

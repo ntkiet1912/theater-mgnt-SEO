@@ -18,5 +18,6 @@ public class StaffResponse extends BaseUserResponse {
     String staffId;
     String cinemaId;
     String jobTitle;
+    String avatarUrl;
     Set<RoleResponse> roles;
 }

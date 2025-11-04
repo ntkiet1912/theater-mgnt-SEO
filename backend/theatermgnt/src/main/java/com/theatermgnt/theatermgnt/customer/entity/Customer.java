@@ -30,6 +30,7 @@ public class Customer {
     String firstName;
     String lastName;
     String address;
+    String avatarUrl;
 
     @Enumerated(EnumType.STRING)
     Gender gender;
