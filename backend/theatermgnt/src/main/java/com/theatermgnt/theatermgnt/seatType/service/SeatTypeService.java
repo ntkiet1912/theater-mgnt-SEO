@@ -1,11 +1,11 @@
 package com.theatermgnt.theatermgnt.seatType.service;
 
+import com.theatermgnt.theatermgnt.common.exception.AppException;
+import com.theatermgnt.theatermgnt.common.exception.ErrorCode;
 import com.theatermgnt.theatermgnt.seatType.dto.request.SeatTypeCreationRequest;
 import com.theatermgnt.theatermgnt.seatType.dto.request.SeatTypeUpdateRequest;
 import com.theatermgnt.theatermgnt.seatType.dto.response.SeatTypeResponse;
 import com.theatermgnt.theatermgnt.seatType.entity.SeatType;
-import com.theatermgnt.theatermgnt.common.exception.AppException;
-import com.theatermgnt.theatermgnt.common.exception.ErrorCode;
 import com.theatermgnt.theatermgnt.seatType.mapper.SeatTypeMapper;
 import com.theatermgnt.theatermgnt.seatType.repository.SeatTypeRepository;
 import lombok.AccessLevel;

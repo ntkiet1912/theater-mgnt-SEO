@@ -1,4 +1,4 @@
-package com.theatermgnt.theatermgnt.enums;
+package com.theatermgnt.theatermgnt.common.enums;
 
 public enum TimeSlot {
     MORNING,

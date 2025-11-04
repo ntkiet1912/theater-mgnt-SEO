@@ -20,10 +20,6 @@ import org.hibernate.annotations.Where;
 @SQLDelete(sql = "UPDATE rooms SET deleted = true WHERE id = ?")
 @Where(clause = "deleted = false")
 public class Room extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    String id;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cinemaId", nullable = false)
     Cinema cinema;

@@ -1,8 +1,8 @@
 package com.theatermgnt.theatermgnt.seat.entity;
 
 import com.theatermgnt.theatermgnt.common.entity.BaseEntity;
-import com.theatermgnt.theatermgnt.seatType.entity.SeatType;
 import com.theatermgnt.theatermgnt.room.entity.Room;
+import com.theatermgnt.theatermgnt.seatType.entity.SeatType;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -20,10 +20,6 @@ import org.hibernate.annotations.Where;
 @SQLDelete(sql = "UPDATE seats SET deleted = true WHERE id = ?")
 @Where(clause = "deleted = false")
 public class Seat extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    String id;
-
     String rowChair;
     Integer seatNumber;
 

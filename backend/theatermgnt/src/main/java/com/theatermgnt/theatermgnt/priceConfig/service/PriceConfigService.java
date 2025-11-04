@@ -1,14 +1,14 @@
 package com.theatermgnt.theatermgnt.priceConfig.service;
 
+import com.theatermgnt.theatermgnt.common.exception.AppException;
+import com.theatermgnt.theatermgnt.common.exception.ErrorCode;
 import com.theatermgnt.theatermgnt.priceConfig.dto.request.PriceConfigCreationRequest;
 import com.theatermgnt.theatermgnt.priceConfig.dto.request.PriceConfigUpdateRequest;
 import com.theatermgnt.theatermgnt.priceConfig.dto.response.PriceConfigResponse;
 import com.theatermgnt.theatermgnt.priceConfig.entity.PriceConfig;
-import com.theatermgnt.theatermgnt.seatType.entity.SeatType;
-import com.theatermgnt.theatermgnt.common.exception.AppException;
-import com.theatermgnt.theatermgnt.common.exception.ErrorCode;
 import com.theatermgnt.theatermgnt.priceConfig.mapper.PriceConfigMapper;
 import com.theatermgnt.theatermgnt.priceConfig.repository.PriceConfigRepository;
+import com.theatermgnt.theatermgnt.seatType.entity.SeatType;
 import com.theatermgnt.theatermgnt.seatType.repository.SeatTypeRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

@@ -1,14 +1,14 @@
 package com.theatermgnt.theatermgnt.room.service;
 
+import com.theatermgnt.theatermgnt.cinema.entity.Cinema;
+import com.theatermgnt.theatermgnt.cinema.repository.CinemaRepository;
+import com.theatermgnt.theatermgnt.common.exception.AppException;
+import com.theatermgnt.theatermgnt.common.exception.ErrorCode;
 import com.theatermgnt.theatermgnt.room.dto.request.RoomCreationRequest;
 import com.theatermgnt.theatermgnt.room.dto.request.RoomUpdateRequest;
 import com.theatermgnt.theatermgnt.room.dto.response.RoomResponse;
-import com.theatermgnt.theatermgnt.cinema.entity.Cinema;
 import com.theatermgnt.theatermgnt.room.entity.Room;
-import com.theatermgnt.theatermgnt.common.exception.AppException;
-import com.theatermgnt.theatermgnt.common.exception.ErrorCode;
 import com.theatermgnt.theatermgnt.room.mapper.RoomMapper;
-import com.theatermgnt.theatermgnt.cinema.repository.CinemaRepository;
 import com.theatermgnt.theatermgnt.room.repository.RoomRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

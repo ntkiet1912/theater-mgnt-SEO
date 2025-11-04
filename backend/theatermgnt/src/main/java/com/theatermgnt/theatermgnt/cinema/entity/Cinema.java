@@ -20,14 +20,9 @@ import java.time.LocalDateTime;
 @SQLDelete(sql = "UPDATE cinemas SET deleted = true WHERE id = ?")
 @Where(clause = "deleted = false")
 public class Cinema extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    String id;
     String name;
     String address;
     String city;
     String phoneNumber;
     String managerId;
-    LocalDateTime createdAt;
-
 }

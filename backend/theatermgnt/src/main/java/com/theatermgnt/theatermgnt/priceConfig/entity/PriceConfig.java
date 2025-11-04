@@ -1,9 +1,9 @@
 package com.theatermgnt.theatermgnt.priceConfig.entity;
 
 import com.theatermgnt.theatermgnt.common.entity.BaseEntity;
-import com.theatermgnt.theatermgnt.seatType.entity.SeatType;
 import com.theatermgnt.theatermgnt.common.enums.DayType;
 import com.theatermgnt.theatermgnt.common.enums.TimeSlot;
+import com.theatermgnt.theatermgnt.seatType.entity.SeatType;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -23,9 +23,6 @@ import java.math.BigDecimal;
 @SQLDelete(sql = "UPDATE priceConfigs SET deleted = true WHERE id = ?")
 @Where(clause = "deleted = false")
 public class PriceConfig extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    String id;
 
     @Enumerated(EnumType.STRING)
     DayType dayType;

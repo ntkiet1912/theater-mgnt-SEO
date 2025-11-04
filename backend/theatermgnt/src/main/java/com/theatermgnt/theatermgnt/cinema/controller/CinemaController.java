@@ -1,10 +1,10 @@
 package com.theatermgnt.theatermgnt.cinema.controller;
 
-import com.theatermgnt.theatermgnt.common.dto.response.ApiResponse;
 import com.theatermgnt.theatermgnt.cinema.dto.request.CinemaCreationRequest;
 import com.theatermgnt.theatermgnt.cinema.dto.request.CinemaUpdateRequest;
 import com.theatermgnt.theatermgnt.cinema.dto.response.CinemaResponse;
 import com.theatermgnt.theatermgnt.cinema.service.CinemaService;
+import com.theatermgnt.theatermgnt.common.dto.response.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
