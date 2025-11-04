@@ -109,13 +109,6 @@ export function Login() {
           </div>
 
           <GoogleButton />
-
-          <p className="text-center text-sm text-muted-foreground">
-            Don't have an account?{" "}
-            <Link to="/auth/signup" className="text-primary hover:underline font-medium">
-              Sign up now
-            </Link>
-          </p>
         </CardContent>
       </Card>
       </div>
