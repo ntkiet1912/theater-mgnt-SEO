@@ -6,6 +6,7 @@ import com.theatermgnt.theatermgnt.staff.dto.request.StaffProfileUpdateRequest;
 import com.theatermgnt.theatermgnt.staff.dto.response.StaffResponse;
 import com.theatermgnt.theatermgnt.authentication.service.RegistrationService;
 import com.theatermgnt.theatermgnt.staff.service.StaffService;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -24,7 +25,7 @@ public class StaffController {
     RegistrationService registrationService;
 
     @PostMapping
-    public ApiResponse<StaffResponse> createStaff(@RequestBody StaffAccountCreationRequest request) {
+    public ApiResponse<StaffResponse> createStaff(@RequestBody @Valid StaffAccountCreationRequest request) {
         return ApiResponse.<StaffResponse>builder()
                 .result(registrationService.registerStaffAccount(request))
                 .build();

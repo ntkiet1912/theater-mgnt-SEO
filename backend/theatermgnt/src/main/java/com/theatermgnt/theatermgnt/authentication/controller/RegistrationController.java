@@ -1,5 +1,6 @@
 package com.theatermgnt.theatermgnt.authentication.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,7 +23,7 @@ public class RegistrationController {
     RegistrationService registrationService;
 
     @PostMapping("/register")
-    public ApiResponse<BaseUserResponse> registerCustomerAccount(@RequestBody CustomerAccountCreationRequest request) {
+    public ApiResponse<BaseUserResponse> registerCustomerAccount(@Valid @RequestBody CustomerAccountCreationRequest request) {
         return ApiResponse.<BaseUserResponse>builder()
                 .result(registrationService.registerCustomerAccount(request))
                 .build();

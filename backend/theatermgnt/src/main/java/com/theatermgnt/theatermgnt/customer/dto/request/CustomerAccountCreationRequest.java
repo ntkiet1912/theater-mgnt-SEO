@@ -1,27 +1,17 @@
 package com.theatermgnt.theatermgnt.customer.dto.request;
 
-import java.time.LocalDate;
 
-import com.theatermgnt.theatermgnt.account.dto.request.IAccountCreationRequest;
-import com.theatermgnt.theatermgnt.common.enums.Gender;
+import com.theatermgnt.theatermgnt.account.dto.request.BaseAccountCreationRequest;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@SuperBuilder(toBuilder = true)
+@EqualsAndHashCode(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CustomerAccountCreationRequest implements IAccountCreationRequest {
-    String username;
-    String password;
-    String email;
-    String phoneNumber;
+public class CustomerAccountCreationRequest extends BaseAccountCreationRequest {
 
-    String firstName;
-    String lastName;
-    String address;
-    Gender gender;
-    LocalDate dob;
 }
