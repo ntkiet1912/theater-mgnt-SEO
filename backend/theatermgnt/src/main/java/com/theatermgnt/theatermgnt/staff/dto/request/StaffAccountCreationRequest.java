@@ -1,28 +1,20 @@
 package com.theatermgnt.theatermgnt.staff.dto.request;
 
-import com.theatermgnt.theatermgnt.account.dto.request.IAccountCreationRequest;
-import com.theatermgnt.theatermgnt.common.enums.Gender;
+import com.theatermgnt.theatermgnt.account.dto.request.BaseAccountCreationRequest;
+
+import jakarta.validation.constraints.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.time.LocalDate;
+import lombok.experimental.SuperBuilder;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@SuperBuilder(toBuilder = true)
+@EqualsAndHashCode(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class StaffAccountCreationRequest implements IAccountCreationRequest {
-    String username;
-    String password;
-    String email;
-    String phoneNumber;
-
-    String firstName;
-    String lastName;
+public class StaffAccountCreationRequest extends BaseAccountCreationRequest {
+    @Size(max = 100, message = "JOB_TITLE_TOO_LONG")
     String jobTitle;
+    @NotBlank(message = "CINEMA_ID_REQUIRED")
     String cinemaId;
-    String address;
-    Gender gender;
-    LocalDate dob;
 }

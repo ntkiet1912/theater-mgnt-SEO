@@ -27,9 +27,15 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
 
+    @Column(unique = true)
     String email;
+
+    @Column(unique = true)
     String username;
     String password;
+
+    @Column(unique = true)
+
     String phoneNumber;
 
     @Enumerated(EnumType.STRING)
