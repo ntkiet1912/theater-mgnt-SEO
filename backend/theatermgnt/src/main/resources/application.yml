@@ -8,9 +8,9 @@ spring:
   application:
       name: theater-mgnt
   datasource:
-    url: jdbc:postgresql://localhost:5432/theater-mgnt
+    url: jdbc:postgresql://db.zpjvpfkwbcnszfzdwynf.supabase.co:5432/postgres
     username: postgres
-    password: postgres
+    password: 3kSE347@123
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -23,8 +23,3 @@ jwt:
   signerKey: "+PAV/uNVIsN2N1peTkAViUZSSc+t8/wOZQDw8M2+HxBD/2dFy9segSiMPHBr+q97"
   refreshable-duration: 36000
   valid-duration: 3600
-
-cloudinary:
-  cloud-name: dpasjinez
-  api-key: 917927637246357
-  api-secret: hggI9D6AfD7Nf4hX5hWXhg8Q0lk
