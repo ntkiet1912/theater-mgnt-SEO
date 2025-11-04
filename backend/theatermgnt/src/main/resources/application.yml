@@ -23,3 +23,4 @@ jwt:
   signerKey: "+PAV/uNVIsN2N1peTkAViUZSSc+t8/wOZQDw8M2+HxBD/2dFy9segSiMPHBr+q97"
   refreshable-duration: 36000
   valid-duration: 3600
+
