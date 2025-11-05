@@ -34,6 +34,9 @@ public enum ErrorCode {
     PRICECONFIG_EXISTED(2008, "Price config existed", HttpStatus.BAD_REQUEST),
     SEAT_NOT_EXISTED(2009, "Seat not existed", HttpStatus.BAD_REQUEST),
     SEAT_EXISTED(2010, "Seat existed", HttpStatus.BAD_REQUEST),
+
+    //----
+    CANNOT_SEND_EMAIL(3001, "Cannot send email", HttpStatus.BAD_REQUEST),
     ;
     private int code;
     private String message;
