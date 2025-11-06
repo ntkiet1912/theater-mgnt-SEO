@@ -37,8 +37,7 @@ public class EmailService {
                 .htmlContent(request.getHtmlContent())
                 .build();
         try{
-            return emailClient.sendEmail(apiKey,emailRequest);
-
+            return emailClient.sendEmail(apiKey, emailRequest);
         }catch (FeignException e){
             throw new AppException(ErrorCode.USER_EXISTED);
         }

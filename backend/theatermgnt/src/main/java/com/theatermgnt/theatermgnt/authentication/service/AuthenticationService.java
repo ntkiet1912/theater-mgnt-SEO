@@ -5,14 +5,14 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
-import com.theatermgnt.theatermgnt.authentication.dto.request.AuthenticationRequest;
-import com.theatermgnt.theatermgnt.authentication.dto.request.IntrospectRequest;
-import com.theatermgnt.theatermgnt.authentication.dto.request.LogoutRequest;
-import com.theatermgnt.theatermgnt.authentication.dto.request.RefreshTokenRequest;
+import com.theatermgnt.theatermgnt.authentication.dto.request.*;
 import com.theatermgnt.theatermgnt.authentication.dto.response.AuthenticationResponse;
 import com.theatermgnt.theatermgnt.authentication.dto.response.IntrospectResponse;
 import com.theatermgnt.theatermgnt.account.entity.Account;
 import com.theatermgnt.theatermgnt.authentication.entity.InvalidatedToken;
+import com.theatermgnt.theatermgnt.authentication.entity.OtpToken;
+import com.theatermgnt.theatermgnt.authentication.event.PasswordResetEvent;
+import com.theatermgnt.theatermgnt.authentication.repository.OtpTokenRepository;
 import com.theatermgnt.theatermgnt.staff.entity.Staff;
 import com.theatermgnt.theatermgnt.authentication.enums.AccountType;
 import com.theatermgnt.theatermgnt.common.exception.AppException;
@@ -25,12 +25,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.CollectionUtils;
 
+import java.security.SecureRandom;
 import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -46,6 +48,8 @@ public class AuthenticationService {
     AccountRepository accountRepository;
     StaffRepository staffRepository;
     InvalidatedTokenRepository invalidatedTokenRepository;
+    ApplicationEventPublisher eventPublisher;
+    OtpTokenRepository otpTokenRepository;
 
     @NonFinal
     @Value("${jwt.signerKey}")
@@ -58,6 +62,10 @@ public class AuthenticationService {
     @NonFinal
     @Value("${jwt.valid-duration}")
     protected long VALID_DURATION;
+
+    @NonFinal
+    @Value("${otp.valid-duration}")
+    protected long OTP_VALID_DURATION;
 
     /// INTROSPECT
     public IntrospectResponse introspect(IntrospectRequest request) throws ParseException, JOSEException {
@@ -139,6 +147,83 @@ public class AuthenticationService {
                 .authenticated(true)
                 .build();
     }
+
+
+    /// FORGOT PASSWORD
+    public void forgotPassword(ForgotPasswordRequest request) {
+        var account = accountRepository.findByUsernameOrEmailOrPhoneNumber(
+                request.getLoginIdentifier(),
+                request.getLoginIdentifier(),
+                request.getLoginIdentifier()
+        );
+
+        // Does not throw exception if not found
+        if(account.isEmpty()) {
+            log.info("Password reset requested for non-existing account: {}", request.getLoginIdentifier());
+            return; // Exit silently to prevent user enumeration
+        }
+
+        Account acc = account.get();
+        otpTokenRepository.findByAccount(acc).ifPresent(otpTokenRepository::delete);
+
+        // Generate otp code
+        String otpCode = generateOtpCode();
+        Instant expiryTime = Instant.now().plus(OTP_VALID_DURATION, ChronoUnit.SECONDS);
+
+        // Save OTP into database
+        OtpToken newOtpToken = OtpToken.builder()
+                .account(acc)
+                .code(otpCode)
+                .expiryTime(expiryTime)
+                .build();
+        otpTokenRepository.save(newOtpToken);
+
+        // Publish event to send email
+        try{
+            eventPublisher.publishEvent(new PasswordResetEvent(
+                    this,
+                    account.get(),
+                    otpCode
+            ));
+            log.info("Password reset requested for account: {}", account.get().getEmail());
+        } catch (Exception e){
+            // Log error but do not throw to avoid user enumeration
+            log.error("Error publishing password reset event: {}", e.getMessage());
+        }
+    }
+
+    /// RESET PASSWORD
+    public void resetPassword(ResetPasswordRequest request) {
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+
+        var account = accountRepository.findByUsernameOrEmailOrPhoneNumber(
+                request.getLoginIdentifier(),
+                request.getLoginIdentifier(),
+                request.getLoginIdentifier())
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+        OtpToken savedOtpToken = otpTokenRepository.findByAccount(account)
+                .orElseThrow(() -> new AppException(ErrorCode.UNAUTHENTICATED));
+
+        // Validate OTP code and expiry
+        if(savedOtpToken.getExpiryTime().isBefore(Instant.now())) {
+            otpTokenRepository.delete(savedOtpToken);
+            throw new AppException(ErrorCode.UNAUTHENTICATED);
+        }
+
+        if(!savedOtpToken.getCode().equals(request.getOtpCode())) {
+            throw new AppException(ErrorCode.UNAUTHENTICATED);
+        }
+        // OTP is valid - proceed to reset password
+        account.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        accountRepository.save(account);
+
+        // Delete used OTP
+        otpTokenRepository.delete(savedOtpToken);
+        log.info("Password has been reset for user: {}", account.getEmail());
+
+    }
+
     /// VERIFY TOKEN
     private SignedJWT verifyToken(String token, boolean isRefreshToken) throws JOSEException, ParseException {
         JWSVerifier verifier = new MACVerifier(SIGNER_KEY.getBytes());
@@ -184,7 +269,6 @@ public class AuthenticationService {
             scope = "ROLE_CUSTOMER";
         }
 
-
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
                 .issuer("theater-mgnt.com")
                 .subject(account.getId())
@@ -222,5 +306,14 @@ public class AuthenticationService {
 
         return stringJoiner.toString();
     }
+
+
+    /// GENERATE OTP CODE
+    private String generateOtpCode() {
+        SecureRandom random = new SecureRandom();
+        int otp = 100000 + random.nextInt(900000);
+        return String.valueOf(otp);
+    }
+
 }
 
