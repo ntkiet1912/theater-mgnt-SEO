@@ -10,3 +10,22 @@ export const getMyInfo = async () => {
   });
 };
 
+export const updateMyInfo = async (
+  staffId: string,
+  data: {
+    firstName?: string;
+    lastName?: string;
+    jobTitle?: string;
+    cinemaId?: string;
+    address?: string;
+    gender?: string;
+    dob?: string;
+    role?: Array<string>;
+    avatarUrl?: string;
+}) => {
+  return await httpClient.put(`/staffs/${staffId}`, data, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+};

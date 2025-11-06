@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 @Getter
 public enum ErrorCode {
-
     UNCATEGORIZED_EXCEPTION(9999, "Uncategorized error", HttpStatus.INTERNAL_SERVER_ERROR), // Code: 500
     INVALID_KEY(1001, "Invalid message key", HttpStatus.BAD_REQUEST), // 404
     UNAUTHORIZED(1002, "You do not have permissions", HttpStatus.FORBIDDEN), // 403
@@ -15,10 +14,15 @@ public enum ErrorCode {
     UNAUTHENTICATED(1006, "Unauthenticated", HttpStatus.UNAUTHORIZED), // 401
     ROLE_NOT_FOUND(1007, "Role not found", HttpStatus.NOT_FOUND), // 401
     INVALID_TYPING(1008, "WRONG IN YOUR CODE", HttpStatus.BAD_REQUEST),
-    USERNAME_INVALID(1009, "Username must be at least {min} characters", HttpStatus.BAD_REQUEST),
-    PASSWORD_INVALID(1010, "Password must be at least {min} characters", HttpStatus.BAD_REQUEST),
+    INVALID_USERNAME(1009, "Username must be at least {min} characters", HttpStatus.BAD_REQUEST),
+    INVALID_PASSWORD(1010, "Password must be at least {min} characters", HttpStatus.BAD_REQUEST),
     UNAUTHORIZE(1011, "You do not have permission", HttpStatus.FORBIDDEN),
     INVALID_DOB(1012, "Your age must be at least {min}", HttpStatus.BAD_REQUEST),
+    EMAIL_IS_REQUIRED(1013, "Email is required", HttpStatus.BAD_REQUEST),
+    INVALID_EMAIL(1014, "Invalid email address", HttpStatus.BAD_REQUEST),
+    PHONE_NUMBER_REQUIRED(1015, "Phone number is required", HttpStatus.BAD_REQUEST),
+    INVALID_PHONE_NUMBER_FORMAT(1016, "Invalid phone number format", HttpStatus.BAD_REQUEST),
+    EMAIL_EXISTED(1017, "Email has existed", HttpStatus.BAD_REQUEST),
     //----
     CINEMA_EXISTED(2001, "Cinema existed", HttpStatus.BAD_REQUEST),
     CINEMA_NOT_EXISTED(2002, "Cinema not existed", HttpStatus.BAD_REQUEST),
@@ -44,5 +48,4 @@ public enum ErrorCode {
         this.code = code;
         this.statusCode = statusCode;
     }
-
 }

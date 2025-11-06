@@ -15,6 +15,7 @@ public class CustomerProfileUpdateRequest {
     String firstName;
     String lastName;
     String address;
+    String avatarUrl;
     Gender gender;
     LocalDate dob;
 }

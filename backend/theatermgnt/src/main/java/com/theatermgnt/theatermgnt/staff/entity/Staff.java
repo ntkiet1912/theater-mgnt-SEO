@@ -35,6 +35,7 @@ public class Staff {
     String lastName;
     String jobTitle;
     String address;
+    String avatarUrl;
     LocalDate dob;
 
     @Enumerated(EnumType.STRING)

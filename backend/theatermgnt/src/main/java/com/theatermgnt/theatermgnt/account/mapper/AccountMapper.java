@@ -2,7 +2,7 @@ package com.theatermgnt.theatermgnt.account.mapper;
 
 import org.mapstruct.*;
 
-import com.theatermgnt.theatermgnt.account.dto.request.IAccountCreationRequest;
+import com.theatermgnt.theatermgnt.account.dto.request.BaseAccountCreationRequest;
 import com.theatermgnt.theatermgnt.account.dto.request.IAccountUpdateRequest;
 import com.theatermgnt.theatermgnt.account.entity.Account;
 
@@ -15,7 +15,7 @@ public interface AccountMapper {
     @Mapping(target = "isActive", constant = "true")
     @Mapping(target = "password", ignore = true) // Password is handled separately
     @Mapping(target = "accountType", ignore = true)
-    Account toAccount(IAccountCreationRequest request);
+    Account toAccount(BaseAccountCreationRequest request);
 
 
     @Mapping(target = "id", ignore = true)

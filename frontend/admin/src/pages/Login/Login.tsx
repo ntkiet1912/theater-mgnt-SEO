@@ -76,9 +76,7 @@ export function Login() {
                 <label htmlFor="password" className="text-sm font-medium">
                   Password
                 </label>
-                <Link to="/auth/forgot-password" className="text-xs text-primary hover:underline">
-                  Forget password?
-                </Link>
+                
               </div>
               <Input
                 id="password"
@@ -89,6 +87,11 @@ export function Login() {
                 required
                 disabled={isLoading}
               />
+            </div>
+            <div className="flex justify-end">
+              <Link to="/auth/forgot-password" className="text-xs text-primary hover:underline">
+                Forget password?
+              </Link>
             </div>
 
             <Button type="submit" className="w-full" disabled={isLoading}>
@@ -106,13 +109,6 @@ export function Login() {
           </div>
 
           <GoogleButton />
-
-          <p className="text-center text-sm text-muted-foreground">
-            Don't have an account?{" "}
-            <Link to="/auth/signup" className="text-primary hover:underline font-medium">
-              Sign up now
-            </Link>
-          </p>
         </CardContent>
       </Card>
       </div>
