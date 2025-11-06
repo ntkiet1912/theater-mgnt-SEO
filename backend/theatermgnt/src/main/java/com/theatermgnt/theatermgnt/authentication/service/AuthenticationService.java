@@ -168,7 +168,7 @@ public class AuthenticationService {
 
         // Generate otp code
         String otpCode = generateOtpCode();
-        Instant expiryTime = Instant.now().plus(OTP_VALID_DURATION, ChronoUnit.SECONDS);
+        Instant expiryTime = Instant.now().plus(OTP_VALID_DURATION, ChronoUnit.MINUTES);
 
         // Save OTP into database
         OtpToken newOtpToken = OtpToken.builder()
@@ -202,17 +202,18 @@ public class AuthenticationService {
                 request.getLoginIdentifier())
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
+        // Get saved OTP from database
         OtpToken savedOtpToken = otpTokenRepository.findByAccount(account)
                 .orElseThrow(() -> new AppException(ErrorCode.UNAUTHENTICATED));
 
         // Validate OTP code and expiry
         if(savedOtpToken.getExpiryTime().isBefore(Instant.now())) {
             otpTokenRepository.delete(savedOtpToken);
-            throw new AppException(ErrorCode.UNAUTHENTICATED);
+            throw new AppException(ErrorCode.OTP_EXPIRED);
         }
 
         if(!savedOtpToken.getCode().equals(request.getOtpCode())) {
-            throw new AppException(ErrorCode.UNAUTHENTICATED);
+            throw new AppException(ErrorCode.INVALID_OTP);
         }
         // OTP is valid - proceed to reset password
         account.setPassword(passwordEncoder.encode(request.getNewPassword()));
@@ -221,7 +222,6 @@ public class AuthenticationService {
         // Delete used OTP
         otpTokenRepository.delete(savedOtpToken);
         log.info("Password has been reset for user: {}", account.getEmail());
-
     }
 
     /// VERIFY TOKEN

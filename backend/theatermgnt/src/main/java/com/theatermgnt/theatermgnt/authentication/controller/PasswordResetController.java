@@ -6,6 +6,7 @@ import com.theatermgnt.theatermgnt.authentication.service.AuthenticationService;
 import com.theatermgnt.theatermgnt.authentication.service.RegistrationService;
 import com.theatermgnt.theatermgnt.common.dto.response.ApiResponse;
 import com.theatermgnt.theatermgnt.common.dto.response.BaseUserResponse;
+import com.theatermgnt.theatermgnt.common.exception.ErrorCode;
 import com.theatermgnt.theatermgnt.customer.dto.request.CustomerAccountCreationRequest;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -28,12 +29,16 @@ public class PasswordResetController {
     @PostMapping("/forgot-password")
     public ApiResponse<Void> forgotPassword(@RequestBody ForgotPasswordRequest request){
         authenticationService.forgotPassword(request);
-        return ApiResponse.<Void>builder().build();
+        return ApiResponse.<Void>builder()
+                .message("If the account exists, a password reset code has been sent")
+                .build();
     }
 
     @PostMapping("/reset-password")
     public ApiResponse<Void> resetPassword(@RequestBody ResetPasswordRequest request){
         authenticationService.resetPassword(request);
-        return ApiResponse.<Void>builder().build();
+        return ApiResponse.<Void>builder()
+                .message("Password has been reset successfully")
+                .build();
     }
 }

@@ -24,7 +24,7 @@ jwt:
   refreshable-duration: 36000
   valid-duration: 3600
 otp:
-  valid-duration: 600
+  valid-duration: 10
 
 brevo:
   apiKey: ${BREVO_API_KEY}

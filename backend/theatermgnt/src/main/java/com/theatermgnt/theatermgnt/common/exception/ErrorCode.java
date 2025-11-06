@@ -23,6 +23,8 @@ public enum ErrorCode {
     PHONE_NUMBER_REQUIRED(1015, "Phone number is required", HttpStatus.BAD_REQUEST),
     INVALID_PHONE_NUMBER_FORMAT(1016, "Invalid phone number format", HttpStatus.BAD_REQUEST),
     EMAIL_EXISTED(1017, "Email has existed", HttpStatus.BAD_REQUEST),
+    OTP_EXPIRED(1018, "OTP has expired", HttpStatus.BAD_REQUEST),
+    INVALID_OTP(1019, "Invalid OTP", HttpStatus.BAD_REQUEST),
     //----
     CINEMA_EXISTED(2001, "Cinema existed", HttpStatus.BAD_REQUEST),
     CINEMA_NOT_EXISTED(2002, "Cinema not existed", HttpStatus.BAD_REQUEST),
