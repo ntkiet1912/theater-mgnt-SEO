@@ -8,6 +8,8 @@ import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
+import java.math.BigDecimal;
+
 @Setter
 @Getter
 @NoArgsConstructor
@@ -15,10 +17,12 @@ import org.hibernate.annotations.Where;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "comboItems")
-@SQLDelete(sql = "UPDATE comboItems SET deleted = true WHERE id = ?")
+@Table(name = "combos")
+@SQLDelete(sql = "UPDATE combos SET deleted = true WHERE id = ?")
 @Where(clause = "deleted = false")
-public class ComboItem extends BaseEntity {
+public class Combo extends BaseEntity {
     String name;
-    Integer quantity;
+    String description;
+    BigDecimal price;
+    String imageUrl;
 }

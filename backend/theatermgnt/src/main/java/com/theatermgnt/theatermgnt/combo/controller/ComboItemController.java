@@ -1,10 +1,10 @@
-package com.theatermgnt.theatermgnt.room.controller;
+package com.theatermgnt.theatermgnt.combo.controller;
 
 import com.theatermgnt.theatermgnt.common.dto.response.ApiResponse;
-import com.theatermgnt.theatermgnt.room.dto.request.RoomCreationRequest;
-import com.theatermgnt.theatermgnt.room.dto.request.RoomUpdateRequest;
-import com.theatermgnt.theatermgnt.room.dto.response.RoomResponse;
-import com.theatermgnt.theatermgnt.room.service.RoomService;
+import com.theatermgnt.theatermgnt.combo.dto.request.ComboItemCreationRequest;
+import com.theatermgnt.theatermgnt.combo.dto.request.ComboItemUpdateRequest;
+import com.theatermgnt.theatermgnt.combo.dto.response.ComboItemResponse;
+import com.theatermgnt.theatermgnt.combo.service.ComboItemService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -15,54 +15,54 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/rooms")
+@RequestMapping("/comboItems")
 @RequiredArgsConstructor
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class RoomController {
-    RoomService roomService;
+public class ComboItemController {
+    ComboItemService comboItemService;
 
     @PostMapping
-    ApiResponse<RoomResponse> createRoom(@RequestBody @Valid RoomCreationRequest request) {
-        return ApiResponse.<RoomResponse>builder()
-                .result(roomService.createRoom(request))
+    ApiResponse<ComboItemResponse> createComboItem(@RequestBody @Valid ComboItemCreationRequest request) {
+        return ApiResponse.<ComboItemResponse>builder()
+                .result(comboItemService.createComboItem(request))
                 .build();
     }
 
-    @GetMapping("/cinema/{cinemaId}")
-    ApiResponse<List<RoomResponse>> getRoomsByCinema(@PathVariable String cinemaId) {
-        return ApiResponse.<List<RoomResponse>>builder()
-                .result(roomService.getRoomsByCinema(cinemaId))
+    @GetMapping("/combo/{comboId}")
+    ApiResponse<List<ComboItemResponse>> getComboItemsByCombo(@PathVariable String comboId) {
+        return ApiResponse.<List<ComboItemResponse>>builder()
+                .result(comboItemService.getComboItemsByCombo(comboId))
                 .build();
     }
 
-    @GetMapping("/{roomId}")
-    ApiResponse<RoomResponse> getRoom(@PathVariable String roomId) {
-        return ApiResponse.<RoomResponse>builder()
-                .result(roomService.getRoom(roomId))
+    @GetMapping("/{comboItemId}")
+    ApiResponse<ComboItemResponse> getComboItem(@PathVariable String comboItemId) {
+        return ApiResponse.<ComboItemResponse>builder()
+                .result(comboItemService.getComboItem(comboItemId))
                 .build();
     }
 
     @GetMapping
-    ApiResponse<List<RoomResponse>> getRooms() {
-        return ApiResponse.<List<RoomResponse>>builder()
-                .result(roomService.getRooms())
+    ApiResponse<List<ComboItemResponse>> getComboItems() {
+        return ApiResponse.<List<ComboItemResponse>>builder()
+                .result(comboItemService.getComboItems())
                 .build();
     }
 
-    @PutMapping("/{roomId}")
-    ApiResponse<RoomResponse> updateRoom(@PathVariable String roomId,
-                                         @RequestBody @Valid RoomUpdateRequest request) {
-        return ApiResponse.<RoomResponse>builder()
-                .result(roomService.updateRoom(roomId, request))
+    @PutMapping("/{comboItemId}")
+    ApiResponse<ComboItemResponse> updateComboItem(@PathVariable String comboItemId,
+                                         @RequestBody @Valid ComboItemUpdateRequest request) {
+        return ApiResponse.<ComboItemResponse>builder()
+                .result(comboItemService.updateComboItem(comboItemId, request))
                 .build();
     }
 
-    @DeleteMapping("/{roomId}")
-    ApiResponse<String> deleteRoom(@PathVariable String roomId) {
-        roomService.deleteRoom(roomId);
+    @DeleteMapping("/{comboItemId}")
+    ApiResponse<String> deleteComboItem(@PathVariable String comboItemId) {
+        comboItemService.deleteComboItem(comboItemId);
         return ApiResponse.<String>builder()
-                .result("Delete room successfully")
+                .result("Delete ComboItem successfully")
                 .build();
     }
 }

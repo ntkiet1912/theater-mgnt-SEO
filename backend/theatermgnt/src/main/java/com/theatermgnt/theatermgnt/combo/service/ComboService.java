@@ -1,11 +1,11 @@
-package com.theatermgnt.theatermgnt.cinema.service;
+package com.theatermgnt.theatermgnt.combo.service;
 
-import com.theatermgnt.theatermgnt.cinema.dto.request.CinemaCreationRequest;
-import com.theatermgnt.theatermgnt.cinema.dto.request.CinemaUpdateRequest;
-import com.theatermgnt.theatermgnt.cinema.dto.response.CinemaResponse;
-import com.theatermgnt.theatermgnt.cinema.entity.Cinema;
-import com.theatermgnt.theatermgnt.cinema.mapper.CinemaMapper;
-import com.theatermgnt.theatermgnt.cinema.repository.CinemaRepository;
+import com.theatermgnt.theatermgnt.combo.dto.request.ComboCreationRequest;
+import com.theatermgnt.theatermgnt.combo.dto.request.ComboUpdateRequest;
+import com.theatermgnt.theatermgnt.combo.dto.response.ComboResponse;
+import com.theatermgnt.theatermgnt.combo.entity.Combo;
+import com.theatermgnt.theatermgnt.combo.mapper.ComboMapper;
+import com.theatermgnt.theatermgnt.combo.repository.ComboRepository;
 import com.theatermgnt.theatermgnt.common.exception.AppException;
 import com.theatermgnt.theatermgnt.common.exception.ErrorCode;
 import lombok.AccessLevel;
@@ -16,46 +16,46 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class CinemaService {
+public class ComboService {
 
-    CinemaRepository cinemaRepository;
+    ComboRepository comboRepository;
 
-    CinemaMapper cinemaMapper;
+    ComboMapper comboMapper;
 
-    public CinemaResponse createCinema(CinemaCreationRequest request){
+    public ComboResponse createCombo(ComboCreationRequest request){
 
-        if(cinemaRepository.existsByName(request.getName()))
-            throw new AppException(ErrorCode.CINEMA_EXISTED);
+        if(comboRepository.existsByName(request.getName()))
+            throw new AppException(ErrorCode.COMBO_EXISTED);
 
-        Cinema cinema = cinemaMapper.toCinemas(request);
-        cinema.setCreatedAt(LocalDateTime.now());
+        Combo combo = comboMapper.toCombo(request);
 
-        return cinemaMapper.toCinemaResponse(cinemaRepository.save(cinema));
+        return comboMapper.toComboResponse(comboRepository.save(combo));
     }
 
-    public List<CinemaResponse> getCinemas(){
-        return cinemaRepository.findAll().stream()
-                .map(cinemaMapper::toCinemaResponse).toList();
+    public List<ComboResponse> getCombos(){
+        return comboRepository.findAll().stream()
+                .map(comboMapper::toComboResponse).toList();
     }
 
-    public CinemaResponse getCinema(String cinemaId){
-        return cinemaMapper.toCinemaResponse(cinemaRepository.findById(cinemaId).orElseThrow(()-> new AppException(ErrorCode.CINEMA_NOT_EXISTED)));
+    public ComboResponse getCombo(String comboId){
+        return comboMapper.toComboResponse(comboRepository.findById(comboId).orElseThrow(()-> new AppException(ErrorCode.COMBO_NOT_EXISTED)));
     }
 
-    public void deleteCinema(String cinemaId){
-        cinemaRepository.deleteById(cinemaId);
+    public void deleteCombo(String comboId){
+        comboRepository.deleteById(comboId);
     }
 
-    public CinemaResponse updateCinema(String cinemaId, CinemaUpdateRequest request){
-        Cinema cinema = cinemaRepository.findById(cinemaId).orElseThrow(()-> new AppException(ErrorCode.CINEMA_NOT_EXISTED));
+    public ComboResponse updateCombo(String comboId, ComboUpdateRequest request){
+        Combo combo = comboRepository.findById(comboId).orElseThrow(()-> new AppException(ErrorCode.COMBO_NOT_EXISTED));
 
-        cinemaMapper.updateCinema(cinema,request);
+        comboMapper.updateCombo(combo,request);
 
-        return cinemaMapper.toCinemaResponse(cinemaRepository.save(cinema));
+        return comboMapper.toComboResponse(comboRepository.save(combo));
     }
 
 }

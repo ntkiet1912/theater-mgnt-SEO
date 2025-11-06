@@ -1,16 +1,16 @@
-package com.theatermgnt.theatermgnt.cinema.mapper;
+package com.theatermgnt.theatermgnt.combo.mapper;
 
 
-import com.theatermgnt.theatermgnt.cinema.dto.request.CinemaCreationRequest;
-import com.theatermgnt.theatermgnt.cinema.dto.request.CinemaUpdateRequest;
-import com.theatermgnt.theatermgnt.cinema.dto.response.CinemaResponse;
-import com.theatermgnt.theatermgnt.cinema.entity.Cinema;
+import com.theatermgnt.theatermgnt.combo.dto.request.ComboCreationRequest;
+import com.theatermgnt.theatermgnt.combo.dto.request.ComboUpdateRequest;
+import com.theatermgnt.theatermgnt.combo.dto.response.ComboResponse;
+import com.theatermgnt.theatermgnt.combo.entity.Combo;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
-public interface CinemaMapper {
-    Cinema toCinemas(CinemaCreationRequest request);
-    CinemaResponse toCinemaResponse(Cinema cinema);
-    void updateCinema(@MappingTarget Cinema cinema, CinemaUpdateRequest request);
+public interface ComboMapper {
+    Combo toCombo(ComboCreationRequest request);
+    ComboResponse toComboResponse(Combo combo);
+    void updateCombo(@MappingTarget Combo combo, ComboUpdateRequest request);
 }

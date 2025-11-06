@@ -1,28 +1,31 @@
-package com.theatermgnt.theatermgnt.cinema.dto.request;
+package com.theatermgnt.theatermgnt.combo.dto.request;
 
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.math.BigDecimal;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CinemaCreationRequest {
+public class ComboCreationRequest {
 
-    @Size(min = 3, message = "CINEMA_NAME_INVALID")
+    @Size(min = 3, message = "COMBO_NAME_INVALID")
     String name;
 
-    @Size(min = 3, message = "CINEMA_ADDRESS_INVALID")
-    String address;
+    @Size(min = 3, message = "COMBO_DESCRIPTION_INVALID")
+    String description;
 
-    @Size(min = 3, message = "CINEMA_CITY_INVALID")
-    String city;
+    @NotNull
+    BigDecimal price;
 
-    @Pattern(regexp = "^\\+?[0-9]{8,15}$", message = "CINEMA_PHONE_NUMBER_INVALID")
-    String phoneNumber;
-
+    @NotBlank
+    String imageUrl;
 }

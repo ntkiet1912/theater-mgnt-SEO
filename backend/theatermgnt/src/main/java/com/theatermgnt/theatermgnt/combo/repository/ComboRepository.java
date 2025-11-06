@@ -1,8 +1,8 @@
-package com.theatermgnt.theatermgnt.cinema.repository;
+package com.theatermgnt.theatermgnt.combo.repository;
 
-import com.theatermgnt.theatermgnt.cinema.entity.Cinema;
+import com.theatermgnt.theatermgnt.combo.entity.Combo;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CinemaRepository extends JpaRepository<Cinema,String> {
+public interface ComboRepository extends JpaRepository<Combo,String> {
     boolean existsByName(String name);
 }

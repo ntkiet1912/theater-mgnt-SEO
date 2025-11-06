@@ -4,17 +4,15 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ComboResponse {
+public class ComboItemResponse {
      String id;
+     String comboName;
      String name;
-     String description;
-     BigDecimal price;
-     String imageUrl;
+     Integer quantity;
 }

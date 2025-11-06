@@ -1,9 +1,9 @@
-package com.theatermgnt.theatermgnt.cinema.controller;
+package com.theatermgnt.theatermgnt.combo.controller;
 
-import com.theatermgnt.theatermgnt.cinema.dto.request.CinemaCreationRequest;
-import com.theatermgnt.theatermgnt.cinema.dto.request.CinemaUpdateRequest;
-import com.theatermgnt.theatermgnt.cinema.dto.response.CinemaResponse;
-import com.theatermgnt.theatermgnt.cinema.service.CinemaService;
+import com.theatermgnt.theatermgnt.combo.dto.request.ComboCreationRequest;
+import com.theatermgnt.theatermgnt.combo.dto.request.ComboUpdateRequest;
+import com.theatermgnt.theatermgnt.combo.dto.response.ComboResponse;
+import com.theatermgnt.theatermgnt.combo.service.ComboService;
 import com.theatermgnt.theatermgnt.common.dto.response.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -15,46 +15,46 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/cinemas")
+@RequestMapping("/combos")
 @RequiredArgsConstructor
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class CinemaController {
-    CinemaService cinemaService;
+public class ComboController {
+    ComboService comboService;
 
     @PostMapping
-    ApiResponse<CinemaResponse> createCinema(@RequestBody @Valid CinemaCreationRequest request){
-        return ApiResponse.<CinemaResponse>builder()
-                .result(cinemaService.createCinema(request))
+    ApiResponse<ComboResponse> createCombo(@RequestBody @Valid ComboCreationRequest request){
+        return ApiResponse.<ComboResponse>builder()
+                .result(comboService.createCombo(request))
                 .build();
     }
 
     @GetMapping
-    ApiResponse<List<CinemaResponse>> getCinemas(){
-        return ApiResponse.<List<CinemaResponse>>builder()
-                .result(cinemaService.getCinemas())
+    ApiResponse<List<ComboResponse>> getCombos(){
+        return ApiResponse.<List<ComboResponse>>builder()
+                .result(comboService.getCombos())
                 .build();
     }
 
-    @GetMapping("/{cinemaId}")
-    ApiResponse<CinemaResponse> getCinema(@PathVariable("cinemaId") String cinemaId){
-        return ApiResponse.<CinemaResponse>builder()
-                .result(cinemaService.getCinema(cinemaId))
+    @GetMapping("/{comboId}")
+    ApiResponse<ComboResponse> getCombo(@PathVariable("comboId") String comboId){
+        return ApiResponse.<ComboResponse>builder()
+                .result(comboService.getCombo(comboId))
                 .build();
     }
 
-    @DeleteMapping("/{cinemaId}")
-    ApiResponse<String> deleteCinema(@PathVariable("cinemaId") String cinemaId){
-        cinemaService.deleteCinema(cinemaId);
+    @DeleteMapping("/{comboId}")
+    ApiResponse<String> deleteCombo(@PathVariable("comboId") String comboId){
+        comboService.deleteCombo(comboId);
         return ApiResponse.<String>builder()
-                .result("Delete cinema successfully")
+                .result("Delete combo successfully")
                 .build();
     }
 
-    @PutMapping("/{cinemaId}")
-    ApiResponse<CinemaResponse> updateUser(@PathVariable String cinemaId,@RequestBody @Valid CinemaUpdateRequest request){
-        return ApiResponse.<CinemaResponse>builder()
-                .result(cinemaService.updateCinema(cinemaId, request))
+    @PutMapping("/{comboId}")
+    ApiResponse<ComboResponse> updateUser(@PathVariable String comboId,@RequestBody @Valid ComboUpdateRequest request){
+        return ApiResponse.<ComboResponse>builder()
+                .result(comboService.updateCombo(comboId, request))
                 .build();
     }
 }

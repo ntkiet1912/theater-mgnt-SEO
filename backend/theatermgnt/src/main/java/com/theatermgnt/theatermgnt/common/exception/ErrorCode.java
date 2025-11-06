@@ -30,6 +30,10 @@ public enum ErrorCode {
     PRICECONFIG_EXISTED(2008, "Price config existed", HttpStatus.BAD_REQUEST),
     SEAT_NOT_EXISTED(2009, "Seat not existed", HttpStatus.BAD_REQUEST),
     SEAT_EXISTED(2010, "Seat existed", HttpStatus.BAD_REQUEST),
+    COMBO_EXISTED(2011, "Seat existed", HttpStatus.BAD_REQUEST),
+    COMBO_NOT_EXISTED(2012, "Seat not existed", HttpStatus.BAD_REQUEST),
+    COMBO_ITEM_EXISTED(2011, "Seat existed", HttpStatus.BAD_REQUEST),
+    COMBO_ITEM_NOT_EXISTED(2012, "Seat not existed", HttpStatus.BAD_REQUEST),
     ;
     private int code;
     private String message;

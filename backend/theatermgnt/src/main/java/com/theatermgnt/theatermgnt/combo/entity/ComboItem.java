@@ -1,13 +1,12 @@
-package com.theatermgnt.theatermgnt.cinema.entity;
+package com.theatermgnt.theatermgnt.combo.entity;
 
+import com.theatermgnt.theatermgnt.cinema.entity.Cinema;
 import com.theatermgnt.theatermgnt.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
-
-import java.time.LocalDateTime;
 
 @Setter
 @Getter
@@ -16,13 +15,13 @@ import java.time.LocalDateTime;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "cinemas")
-@SQLDelete(sql = "UPDATE cinemas SET deleted = true WHERE id = ?")
+@Table(name = "comboItems")
+@SQLDelete(sql = "UPDATE comboItems SET deleted = true WHERE id = ?")
 @Where(clause = "deleted = false")
-public class Cinema extends BaseEntity {
+public class ComboItem extends BaseEntity {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "comboId", nullable = false)
+    Combo combo;
     String name;
-    String address;
-    String city;
-    String phoneNumber;
-    String managerId;
+    Integer quantity;
 }

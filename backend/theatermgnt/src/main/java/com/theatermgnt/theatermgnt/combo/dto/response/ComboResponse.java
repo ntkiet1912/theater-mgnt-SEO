@@ -1,8 +1,9 @@
-package com.theatermgnt.theatermgnt.cinema.dto.response;
+package com.theatermgnt.theatermgnt.combo.dto.response;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
@@ -10,12 +11,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CinemaResponse {
+public class ComboResponse {
      String id;
      String name;
-     String address;
-     String city;
-     String phoneNumber;
-     String managerId;
-     LocalDateTime createdAt;
+     String description;
+     BigDecimal price;
+     String imageUrl;
 }
