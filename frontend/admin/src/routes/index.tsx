@@ -3,10 +3,16 @@ import PrivateRoute from "@/components/PrivateRoute"
 import { DashboardOverview } from "@/pages/Dashboard/Overview"
 import { Login } from "@/pages/Login/Login"
 import { Profile } from "@/pages/Profile/StaffProfile"
+import Authenticate from "@/components/auth/authenticate"
+
 export const routes = [
   {
     path: "/login",
     element: <Login />
+  },
+  {
+    path: "/authenticate",
+    element: <Authenticate />
   },
   {
     path: "/",
@@ -35,6 +41,7 @@ export const routes = [
 export const ROUTES = {
   HOME: "/",
   LOGIN: "/login",
+  AUTHENTICATE: "/authenticate",
   DASHBOARD: "/dashboard",
   MOVIES: "/dashboard/movies",
   SHOWTIMES: "/dashboard/showtimes", 

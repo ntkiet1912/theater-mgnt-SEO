@@ -1,14 +1,19 @@
 import { Button } from "@/components/ui/button"
+import { OAuthConfig } from "@/configurations/configuration"
 
 export function GoogleButton() {
   const handleGoogleLogin = () => {
-    // TODO: Implement actual Google OAuth login
-    console.log("Google login clicked")
-    // You can integrate with services like:
-    // - NextAuth.js
-    // - Supabase Auth
-    // - Firebase Auth
-    // - Auth0
+    const callbackUrl = OAuthConfig.redirectUri;
+    const authUrl = OAuthConfig.authUri;
+    const googleClientId = OAuthConfig.clientId;
+
+    const targetUrl = `${authUrl}?redirect_uri=${encodeURIComponent(
+      callbackUrl
+    )}&response_type=code&client_id=${googleClientId}&scope=openid%20email%20profile`;
+
+    console.log("Redirecting to Google OAuth URL:", targetUrl);
+    window.location.href = targetUrl;
+
   }
 
   return (
