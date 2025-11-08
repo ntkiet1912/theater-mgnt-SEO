@@ -25,6 +25,9 @@ public enum ErrorCode {
     EMAIL_EXISTED(1017, "Email has existed", HttpStatus.BAD_REQUEST),
     OTP_EXPIRED(1018, "OTP has expired", HttpStatus.BAD_REQUEST),
     INVALID_OTP(1019, "Invalid OTP", HttpStatus.BAD_REQUEST),
+    FAILED_TO_REGISTER_USER(1020, "Failed to register customer by Google", HttpStatus.BAD_REQUEST),
+    PASSWORD_EXISTED(1021, "Password has existed", HttpStatus.BAD_REQUEST),
+
     //----
     CINEMA_EXISTED(2001, "Cinema existed", HttpStatus.BAD_REQUEST),
     CINEMA_NOT_EXISTED(2002, "Cinema not existed", HttpStatus.BAD_REQUEST),

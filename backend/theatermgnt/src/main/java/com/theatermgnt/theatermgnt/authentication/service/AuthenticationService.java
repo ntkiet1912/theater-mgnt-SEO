@@ -13,6 +13,13 @@ import com.theatermgnt.theatermgnt.authentication.entity.InvalidatedToken;
 import com.theatermgnt.theatermgnt.authentication.entity.OtpToken;
 import com.theatermgnt.theatermgnt.authentication.event.PasswordResetEvent;
 import com.theatermgnt.theatermgnt.authentication.repository.OtpTokenRepository;
+import com.theatermgnt.theatermgnt.authentication.repository.httpClient.OutboundIdentityClient;
+import com.theatermgnt.theatermgnt.authentication.repository.httpClient.OutboundUserClient;
+import com.theatermgnt.theatermgnt.constant.PredefinedRole;
+import com.theatermgnt.theatermgnt.customer.dto.request.CustomerAccountCreationRequest;
+import com.theatermgnt.theatermgnt.customer.dto.response.CustomerResponse;
+import com.theatermgnt.theatermgnt.customer.entity.Customer;
+import com.theatermgnt.theatermgnt.customer.repository.CustomerRepository;
 import com.theatermgnt.theatermgnt.staff.entity.Staff;
 import com.theatermgnt.theatermgnt.authentication.enums.AccountType;
 import com.theatermgnt.theatermgnt.common.exception.AppException;
@@ -50,6 +57,9 @@ public class AuthenticationService {
     InvalidatedTokenRepository invalidatedTokenRepository;
     ApplicationEventPublisher eventPublisher;
     OtpTokenRepository otpTokenRepository;
+    OutboundIdentityClient outboundIdentityClient;
+    OutboundUserClient outboundUserClient;
+    RegistrationService registrationService;
 
     @NonFinal
     @Value("${jwt.signerKey}")
@@ -66,6 +76,22 @@ public class AuthenticationService {
     @NonFinal
     @Value("${otp.valid-duration}")
     protected long OTP_VALID_DURATION;
+
+    @NonFinal
+    @Value("${outbound.identity.client-id}")
+    protected String CLIENT_ID;
+
+    @NonFinal
+    @Value("${outbound.identity.client-secret}")
+    protected String CLIENT_SECRET;
+
+    @NonFinal
+    @Value("${outbound.identity.redirect-uri}")
+    protected String REDIRECT_URI;
+
+    @NonFinal
+    protected String GRANT_TYPE = "authorization_code";
+
 
     /// INTROSPECT
     public IntrospectResponse introspect(IntrospectRequest request) throws ParseException, JOSEException {
@@ -224,6 +250,39 @@ public class AuthenticationService {
         log.info("Password has been reset for user: {}", account.getEmail());
     }
 
+
+    /// OUTBOUND AUTHENTICATION
+    public AuthenticationResponse outboundAuthenticate(String code) {
+        var response = outboundIdentityClient.exchangeToken(ExchangeTokenRequest.builder()
+                .code(code)
+                .clientId(CLIENT_ID)
+                .clientSecret(CLIENT_SECRET)
+                .redirectUri(REDIRECT_URI)
+                .grantType(GRANT_TYPE)
+                .build());
+
+        var userInfo = outboundUserClient.getUserInfo("json", response.getAccessToken());
+
+        var account = accountRepository.findByEmail(userInfo.getEmail()).orElseGet(
+                () -> {
+                    registrationService.registerCustomerAccount(CustomerAccountCreationRequest.builder()
+                                    .username(userInfo.getEmail())
+                                    .email(userInfo.getEmail())
+                                    .firstName(userInfo.getGivenName())
+                                    .lastName(userInfo.getFamilyName())
+                            .build());
+
+                    return accountRepository.findByEmail(userInfo.getEmail())
+                            .orElseThrow(() -> new AppException(ErrorCode.FAILED_TO_REGISTER_USER));
+                });
+
+        var token = generateToken(account);
+
+        return AuthenticationResponse.builder()
+                .token(response.getAccessToken())
+                .build();
+    }
+
     /// VERIFY TOKEN
     private SignedJWT verifyToken(String token, boolean isRefreshToken) throws JOSEException, ParseException {
         JWSVerifier verifier = new MACVerifier(SIGNER_KEY.getBytes());
@@ -266,7 +325,7 @@ public class AuthenticationService {
                 log.warn("Account {} has USER type but no matching User profile found.", account.getId());
             }
         } else{
-            scope = "ROLE_CUSTOMER";
+            scope = "ROLE_" + PredefinedRole.CUSTOMER_ROLE;
         }
 
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()

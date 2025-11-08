@@ -1,5 +1,10 @@
 package com.theatermgnt.theatermgnt.account.controller;
 
+import com.theatermgnt.theatermgnt.account.dto.request.PasswordCreationRequest;
+import com.theatermgnt.theatermgnt.common.dto.response.ApiResponse;
+import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,4 +23,11 @@ import lombok.extern.slf4j.Slf4j;
 public class AccountController {
     AccountService accountService;
 
+    @PostMapping("/create-password")
+    ApiResponse<Void> createPassword(@RequestBody @Valid PasswordCreationRequest request) {
+        accountService.createPassword(request);
+        return ApiResponse.<Void>builder()
+                .message("Password has been created, you could use it to login!")
+                .build();
+    }
 }
