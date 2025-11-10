@@ -38,7 +38,7 @@ public class StaffService {
 
     /// CREATE STAFF PROFILE
     @Transactional
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public Staff createStaffProfile(StaffAccountCreationRequest request, Account account, Set<Role> roles) {
         Staff staff = staffMapper.toStaff(request);
         staff.setAccount(account);
@@ -47,7 +47,7 @@ public class StaffService {
     }
 
     /// GET ALL STAFF
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public List<StaffResponse> getAll() {
         return staffRepository.findAll().stream()
                 .map(staffMapper::toStaffResponse)
@@ -55,7 +55,7 @@ public class StaffService {
     }
 
     /// GET STAFF BY ID
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public StaffResponse getStaffProfile(String staffId) {
         Staff staff = staffRepository.findById(staffId)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
