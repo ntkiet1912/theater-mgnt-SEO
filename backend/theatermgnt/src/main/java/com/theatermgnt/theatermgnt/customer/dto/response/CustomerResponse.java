@@ -13,5 +13,5 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 public class CustomerResponse extends BaseUserResponse {
     String customerId;
-    boolean noPassword;
+    Boolean noPassword;
 }

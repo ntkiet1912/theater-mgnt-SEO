@@ -8,9 +8,13 @@ spring:
   application:
       name: theater-mgnt
   datasource:
-    url: jdbc:postgresql://db.zpjvpfkwbcnszfzdwynf.supabase.co:5432/postgres
+#    url: jdbc:postgresql://db.zpjvpfkwbcnszfzdwynf.supabase.co:5432/postgres
+#    username: postgres
+#    password: 3kSE347@123
+    url: jdbc:postgresql://localhost:5432/theater-mgnt
     username: postgres
-    password: 3kSE347@123
+    password: postgres
+
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -23,7 +27,7 @@ outbound:
   identity:
     client-id: ${GOOGLE_CLIENT_ID}
     client-secret: ${GOOGLE_CLIENT_SECRET}
-    redirect-uri: "http://localhost:5173/authenticate"
+    redirect-uri: "http://localhost:3000/authenticate"
 
 jwt:
   signerKey: "+PAV/uNVIsN2N1peTkAViUZSSc+t8/wOZQDw8M2+HxBD/2dFy9segSiMPHBr+q97"

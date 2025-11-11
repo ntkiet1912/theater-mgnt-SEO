@@ -20,7 +20,6 @@ public interface CustomerMapper {
     @Mapping(source = "account.phoneNumber", target = "phoneNumber")
     @Mapping(source = "account.accountType", target = "accountType")
     @Mapping(source = "id", target = "customerId")
-    @Mapping(target = "noPassword", ignore = true)
     CustomerResponse toCustomerResponse(Customer customer);
 
 

@@ -46,10 +46,4 @@ public class AuthenticationController {
         var result = authenticationService.refreshToken(request);
         return ApiResponse.<AuthenticationResponse>builder().result(result).build();
     }
-
-    @PostMapping("/outbound/authenticate")
-    ApiResponse<AuthenticationResponse> outboundAuthentication(@RequestParam("code") String code) {
-        var result = authenticationService.outboundAuthenticate(code);
-        return ApiResponse.<AuthenticationResponse>builder().result(result).build();
-    }
 }

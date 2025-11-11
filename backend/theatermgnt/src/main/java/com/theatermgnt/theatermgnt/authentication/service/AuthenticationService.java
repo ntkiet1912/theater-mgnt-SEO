@@ -53,13 +53,11 @@ import java.util.UUID;
 @Slf4j
 public class AuthenticationService {
     AccountRepository accountRepository;
-    StaffRepository staffRepository;
     InvalidatedTokenRepository invalidatedTokenRepository;
     ApplicationEventPublisher eventPublisher;
     OtpTokenRepository otpTokenRepository;
-    OutboundIdentityClient outboundIdentityClient;
-    OutboundUserClient outboundUserClient;
-    RegistrationService registrationService;
+    TokenService tokenService;
+
 
     @NonFinal
     @Value("${jwt.signerKey}")
@@ -69,28 +67,11 @@ public class AuthenticationService {
     @Value("${jwt.refreshable-duration}")
     protected long REFRESHABLE_DURATION;
 
-    @NonFinal
-    @Value("${jwt.valid-duration}")
-    protected long VALID_DURATION;
 
     @NonFinal
     @Value("${otp.valid-duration}")
     protected long OTP_VALID_DURATION;
 
-    @NonFinal
-    @Value("${outbound.identity.client-id}")
-    protected String CLIENT_ID;
-
-    @NonFinal
-    @Value("${outbound.identity.client-secret}")
-    protected String CLIENT_SECRET;
-
-    @NonFinal
-    @Value("${outbound.identity.redirect-uri}")
-    protected String REDIRECT_URI;
-
-    @NonFinal
-    protected String GRANT_TYPE = "authorization_code";
 
 
     /// INTROSPECT
@@ -121,7 +102,7 @@ public class AuthenticationService {
         boolean authenticated = passwordEncoder.matches(request.getPassword(), account.getPassword());
         if(!authenticated) throw new AppException(ErrorCode.UNAUTHENTICATED);
 
-        var token = generateToken(account);
+        var token = tokenService.generateToken(account);
         return AuthenticationResponse.builder()
                 .authenticated(true)
                 .token(token)
@@ -167,7 +148,7 @@ public class AuthenticationService {
         var account = accountRepository
                 .findByUsername(username)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
-        var token = generateToken(account);
+        var token = tokenService.generateToken(account);
         return AuthenticationResponse.builder()
                 .token(token)
                 .authenticated(true)
@@ -251,38 +232,6 @@ public class AuthenticationService {
     }
 
 
-    /// OUTBOUND AUTHENTICATION
-    public AuthenticationResponse outboundAuthenticate(String code) {
-        var response = outboundIdentityClient.exchangeToken(ExchangeTokenRequest.builder()
-                .code(code)
-                .clientId(CLIENT_ID)
-                .clientSecret(CLIENT_SECRET)
-                .redirectUri(REDIRECT_URI)
-                .grantType(GRANT_TYPE)
-                .build());
-
-        var userInfo = outboundUserClient.getUserInfo("json", response.getAccessToken());
-
-        var account = accountRepository.findByEmail(userInfo.getEmail()).orElseGet(
-                () -> {
-                    registrationService.registerCustomerAccount(CustomerAccountCreationRequest.builder()
-                                    .username(userInfo.getEmail())
-                                    .email(userInfo.getEmail())
-                                    .firstName(userInfo.getGivenName())
-                                    .lastName(userInfo.getFamilyName())
-                            .build());
-
-                    return accountRepository.findByEmail(userInfo.getEmail())
-                            .orElseThrow(() -> new AppException(ErrorCode.FAILED_TO_REGISTER_USER));
-                });
-
-        var token = generateToken(account);
-
-        return AuthenticationResponse.builder()
-                .token(response.getAccessToken())
-                .build();
-    }
-
     /// VERIFY TOKEN
     private SignedJWT verifyToken(String token, boolean isRefreshToken) throws JOSEException, ParseException {
         JWSVerifier verifier = new MACVerifier(SIGNER_KEY.getBytes());
@@ -310,62 +259,6 @@ public class AuthenticationService {
         return signedJWT;
     }
 
-    /// GENERATE TOKEN
-    private String generateToken(Account account) {
-        JWSHeader jwsHeader = new JWSHeader(JWSAlgorithm.HS512);
-
-        String scope = "";
-        if(account.getAccountType() == AccountType.INTERNAL) {
-            Staff staff = staffRepository.findByAccountId(account.getId())
-                    .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
-
-            if(staff != null) {
-                scope = buildScope(staff);
-            }else{
-                log.warn("Account {} has USER type but no matching User profile found.", account.getId());
-            }
-        } else{
-            scope = "ROLE_" + PredefinedRole.CUSTOMER_ROLE;
-        }
-
-        JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
-                .issuer("theater-mgnt.com")
-                .subject(account.getId())
-                .issueTime(new Date())
-                .expirationTime(new Date(
-                        Instant.now().plus(VALID_DURATION, ChronoUnit.SECONDS).toEpochMilli())
-                )
-                .jwtID(UUID.randomUUID().toString())
-                .claim("scope", scope)
-                .build();
-        Payload payload = new Payload(jwtClaimsSet.toJSONObject());
-        JWSObject jwsObject = new JWSObject(jwsHeader, payload);
-
-        try{
-            jwsObject.sign(new MACSigner(SIGNER_KEY.getBytes()));
-            return jwsObject.serialize();
-        } catch (JOSEException e) {
-            log.error("Cannot create token", e);
-            throw new RuntimeException(e);
-        }
-    }
-    /// BUILD SCOPE
-    private String buildScope(Staff staff) {
-        StringJoiner stringJoiner = new StringJoiner(" ");
-
-        if (!CollectionUtils.isEmpty(staff.getRoles()))
-            staff.getRoles().forEach(role -> {
-                stringJoiner.add("ROLE_" + role.getName());
-
-                if (!CollectionUtils.isEmpty(role.getPermissions()))
-                    role.getPermissions().forEach(permission -> {
-                        stringJoiner.add(permission.getName());
-                    });
-            });
-
-        return stringJoiner.toString();
-    }
-
 
     /// GENERATE OTP CODE
     private String generateOtpCode() {
@@ -373,6 +266,5 @@ public class AuthenticationService {
         int otp = 100000 + random.nextInt(900000);
         return String.valueOf(otp);
     }
-
 }
 

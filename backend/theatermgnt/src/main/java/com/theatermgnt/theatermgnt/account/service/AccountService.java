@@ -37,9 +37,9 @@ public class AccountService {
         if(accountRepository.existsByEmail(request.getEmail())) {
             throw new AppException(ErrorCode.EMAIL_EXISTED);
         }
-        if(accountRepository.existsByPhoneNumber(request.getPhoneNumber())) {
-            throw new AppException(ErrorCode.PHONE_NUMBER_EXISTED);
-        }
+//        if(accountRepository.existsByPhoneNumber(request.getPhoneNumber())) {
+//            throw new AppException(ErrorCode.PHONE_NUMBER_EXISTED);
+//        }
         Account account = accountMapper.toAccount(request);
         account.setPassword(passwordEncoder.encode(request.getPassword()));
         return accountRepository.save(account);
@@ -54,6 +54,10 @@ public class AccountService {
     }
 
     public void createPassword(PasswordCreationRequest request) {
+
+        if(!request.getPassword().equals(request.getConfirmPassword())) {
+            throw new AppException(ErrorCode.PASSWORDS_DO_NOT_MATCH);
+        }
         var context = SecurityContextHolder.getContext();
         String accountId = context.getAuthentication().getName();
 

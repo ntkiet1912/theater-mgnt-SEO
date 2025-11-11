@@ -33,7 +33,6 @@ public class CustomerService {
     /// CREATE CUSTOMER PROFILE
     @Transactional
     public Customer createCustomerProfile(CustomerAccountCreationRequest request, Account account) {
-
         Customer customer = customerMapper.toCustomer(request);
         customer.setAccount(account);
         return customerRepository.save(customer);
@@ -53,7 +52,6 @@ public class CustomerService {
 
         Customer customer = customerRepository.findByAccountId(accountId)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
-
         var customerResponse = customerMapper.toCustomerResponse(customer);
         customerResponse.setNoPassword(!StringUtils.hasText(customer.getAccount().getPassword()));
         return customerResponse;
