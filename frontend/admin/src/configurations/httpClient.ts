@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CONFIG } from "./configuration";
+import { CONFIG, API } from "./configuration";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useNotificationStore } from "@/stores/useNotificationStore";
 
@@ -31,22 +31,27 @@ httpClient.interceptors.response.use(
     return response;
   },
   (error) => {
-    const { response } = error;
+    const { response, config } = error;
     
     // Handle 401 Unauthorized
     if (response?.status === 401) {
-      useAuthStore.getState().clearAuth();
-      useNotificationStore.getState().addNotification({
-        type: 'error',
-        title: 'Authentication Error',
-        message: 'Your session has expired. Please login again.',
-        duration: 5000
-      });
+      // Check if this is a login request - if so, let the login component handle it
+      const isLoginRequest = config?.url?.includes(API.LOGIN);
       
-      // Redirect to login
-      if (window.location.pathname !== '/login') {
+      if (!isLoginRequest) {
+        // This is an authenticated request that failed - session expired
+        useAuthStore.getState().clearAuth();
+        useNotificationStore.getState().addNotification({
+          type: 'error',
+          title: 'Authentication Error',
+          message: 'Your session has expired. Please login again.',
+          duration: 5000
+        });
+        
+        // Redirect to login
         window.location.href = '/login';
       }
+      // If it's a login request, just reject the promise and let the component handle it
     }
     
     // Handle 403 Forbidden
