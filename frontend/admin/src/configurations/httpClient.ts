@@ -2,6 +2,7 @@ import axios from "axios";
 import { CONFIG, API } from "./configuration";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useNotificationStore } from "@/stores/useNotificationStore";
+import { ROUTES } from "@/constants/routes";
 
 const httpClient = axios.create({
   baseURL: CONFIG.API,
@@ -49,7 +50,7 @@ httpClient.interceptors.response.use(
         });
         
         // Redirect to login
-        window.location.href = '/login';
+        window.location.href = ROUTES.LOGIN;
       }
       // If it's a login request, just reject the promise and let the component handle it
     }
