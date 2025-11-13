@@ -2,6 +2,7 @@ import { useState, useEffect, Fragment } from "react";
 import { Card } from "@/components/ui/card";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { PageHeader } from "@/components/ui/PageHeader";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import {
   SearchBar,
   PermissionStats,
@@ -47,11 +48,7 @@ export function PermissionList() {
     setSearchQuery("");
   };
   if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-muted-foreground">Loading...</div>
-      </div>
-    );
+    return <LoadingSpinner message="Loading permissions..." />;
   }
 
   return (

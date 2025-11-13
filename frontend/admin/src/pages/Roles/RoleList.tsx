@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { RoleFormDialog } from "@/components/roles/RoleFormDialog";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { useRoleManager } from "@/hooks/useRoleManager";
 import { ROUTES } from "@/constants/routes";
 import type { Role } from "@/services/roleService";
@@ -71,11 +72,7 @@ export function RoleList() {
   };
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-muted-foreground">Loading...</div>
-      </div>
-    );
+    return <LoadingSpinner message="Loading roles..." />;
   }
 
   return (
