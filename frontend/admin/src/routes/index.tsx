@@ -9,6 +9,7 @@ import { RoleList } from "@/pages/Roles";
 import { MovieList } from "@/pages/Movies";
 import { ShowtimeList } from "@/pages/Showtimes";
 import { TheaterList } from "@/pages/Theaters";
+import { RoomList } from "@/pages/Rooms";
 import { TicketList } from "@/pages/Tickets";
 import { CustomerList } from "@/pages/Customers";
 import { StaffList } from "@/pages/Staff";
@@ -88,6 +89,18 @@ export const routes = [
               {
                 index: true,
                 element: <TheaterList />,
+              },
+            ],
+          },
+          {
+            path: `${ROUTES.ROOMS}`,
+            element: (
+              <ProtectedRoute requiredPermissions={[PERMISSIONS.ROOM_READ]} />
+            ),
+            children: [
+              {
+                index: true,
+                element: <RoomList />,
               },
             ],
           },

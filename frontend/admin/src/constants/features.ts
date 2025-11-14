@@ -12,6 +12,7 @@ import {
   ShoppingBag,
   BarChart3,
   TicketCheck,
+  DoorOpen,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -110,6 +111,14 @@ export const FEATURES: readonly Feature[] = [
     label: "Reports",
     icon: BarChart3,
     description: "View reports and statistics",
+    color: "text-violet-500",
+    bgColor: "bg-violet-500/10",
+  },
+  {
+    id: "ROOM",
+    label: "Rooms Management",
+    icon: DoorOpen,
+    description: "Manage rooms and seating",
     color: "text-violet-500",
     bgColor: "bg-violet-500/10",
   },

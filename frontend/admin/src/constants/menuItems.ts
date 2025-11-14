@@ -11,6 +11,7 @@ import {
   ShoppingBag,
   Receipt,
   BarChart3,
+  DoorOpen,
 } from "lucide-react";
 import { ROUTES } from "@/constants/routes";
 import { PERMISSIONS } from "@/constants/permissions";
@@ -45,6 +46,13 @@ export const MENU_ITEMS: MenuItem[] = [
     icon: Theater,
     path: ROUTES.THEATERS,
     requiredPermissions: [PERMISSIONS.THEATER_READ],
+  },
+  {
+    id: "rooms",
+    label: "Rooms",
+    icon: DoorOpen,
+    path: ROUTES.ROOMS,
+    requiredPermissions: [PERMISSIONS.ROOM_READ],
   },
   {
     id: "customers",
