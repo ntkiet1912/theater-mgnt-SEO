@@ -1,26 +1,26 @@
 package com.theatermgnt.theatermgnt.movie.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-@Table(name = "genres")
+import jakarta.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.theatermgnt.theatermgnt.common.entity.BaseEntity;
+
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Genre {
-
-    @Id
-    @Column(name = "id", length = 50)
-    private String id;
-
-    @Column(name = "name", nullable = false, length = 100)
-    private String name;
+@Builder
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@Entity
+@Table(name = "genres")
+public class Genre extends BaseEntity {
+    String name;
 
     @ManyToMany(mappedBy = "genres")
     @JsonIgnore

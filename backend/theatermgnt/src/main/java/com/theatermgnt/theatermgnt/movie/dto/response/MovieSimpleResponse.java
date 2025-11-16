@@ -1,13 +1,12 @@
 package com.theatermgnt.theatermgnt.movie.dto.response;
 
+import java.time.LocalDate;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.theatermgnt.theatermgnt.movie.entity.Movie;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 /**
  * Response đơn giản cho danh sách phim
@@ -17,17 +16,18 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class MovieSimpleResponse {
 
-    private String id;
-    private String title;
-    private String posterUrl;
-    private Integer durationMinutes;
+    String id;
+    String title;
+    String posterUrl;
+    Integer durationMinutes;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate releaseDate;
+    LocalDate releaseDate;
 
-    private Movie.MovieStatus status;
-    private String ageRatingCode;
-    private String director;
+    Movie.MovieStatus status;
+    String ageRatingCode;
+    String director;
 }

@@ -1,65 +1,67 @@
 package com.theatermgnt.theatermgnt.movie.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.theatermgnt.theatermgnt.movie.entity.Movie;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.theatermgnt.theatermgnt.movie.entity.Movie;
+
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class MovieResponse {
 
-    private String id;
-    private String title;
-    private String description;
-    private Integer durationMinutes;
-    private String director;
-    private String cast;
-    private String posterUrl;
-    private String trailerUrl;
+    String id;
+    String title;
+    String description;
+    Integer durationMinutes;
+    String director;
+    String cast;
+    String posterUrl;
+    String trailerUrl;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate releaseDate;
+    LocalDate releaseDate;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate endDate;
+    LocalDate endDate;
 
-    private Movie.MovieStatus status;
+    Movie.MovieStatus status;
 
     // Nested objects
-    private AgeRatingInfo ageRating;
-    private Set<GenreInfo> genres;
+    AgeRatingInfo ageRating;
+    Set<GenreInfo> genres;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime createdAt;
+    LocalDateTime createdAt;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime updatedAt;
+    LocalDateTime updatedAt;
 
     @Data
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
+    @FieldDefaults(level = AccessLevel.PRIVATE)
     public static class AgeRatingInfo {
-        private String id;
-        private String code;
-        private String description;
+        String id;
+        String code;
+        String description;
     }
 
     @Data
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
+    @FieldDefaults(level = AccessLevel.PRIVATE)
     public static class GenreInfo {
-        private String id;
-        private String name;
+        String id;
+        String name;
     }
 }

@@ -1,27 +1,31 @@
 package com.theatermgnt.theatermgnt.movie.service;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.theatermgnt.theatermgnt.common.exception.ResourceNotFoundException;
 import com.theatermgnt.theatermgnt.movie.dto.request.CreateAgeRatingRequest;
 import com.theatermgnt.theatermgnt.movie.dto.response.AgeRatingResponse;
 import com.theatermgnt.theatermgnt.movie.entity.AgeRating;
-import com.theatermgnt.theatermgnt.common.exception.ResourceNotFoundException;
 import com.theatermgnt.theatermgnt.movie.mapper.AgeRatingMapper;
 import com.theatermgnt.theatermgnt.movie.repository.AgeRatingRepository;
+
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 
-import java.util.List;
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AgeRatingService {
 
-    private final AgeRatingRepository ageRatingRepository;
-    private final AgeRatingMapper ageRatingMapper;
+    AgeRatingRepository ageRatingRepository;
+    AgeRatingMapper ageRatingMapper;
 
     // CREATE
-    @Transactional
     public AgeRatingResponse createAgeRating(CreateAgeRatingRequest request) {
         AgeRating ageRating = new AgeRating();
         ageRating.setId(request.getId());
@@ -29,24 +33,26 @@ public class AgeRatingService {
         ageRating.setDescription(request.getDescription());
 
         AgeRating savedAgeRating = ageRatingRepository.save(ageRating);
-        return ageRatingMapper.toResponse(savedAgeRating);
+        return ageRatingMapper.toAgeRatingResponse(savedAgeRating);
     }
 
     // READ
     public List<AgeRatingResponse> getAllAgeRatings() {
         List<AgeRating> ageRatings = ageRatingRepository.findAll();
-        return ageRatingMapper.toResponseList(ageRatings);
+        return ageRatingMapper.toAgeRatingResponseList(ageRatings);
     }
 
     public AgeRatingResponse getAgeRatingById(String id) {
-        AgeRating ageRating = ageRatingRepository.findById(id)
+        AgeRating ageRating = ageRatingRepository
+                .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("AgeRating", "id", id));
-        return ageRatingMapper.toResponse(ageRating);
+        return ageRatingMapper.toAgeRatingResponse(ageRating);
     }
 
     public AgeRatingResponse getAgeRatingByCode(String code) {
-        AgeRating ageRating = ageRatingRepository.findByCode(code)
+        AgeRating ageRating = ageRatingRepository
+                .findByCode(code)
                 .orElseThrow(() -> new ResourceNotFoundException("AgeRating", "code", code));
-        return ageRatingMapper.toResponse(ageRating);
+        return ageRatingMapper.toAgeRatingResponse(ageRating);
     }
 }

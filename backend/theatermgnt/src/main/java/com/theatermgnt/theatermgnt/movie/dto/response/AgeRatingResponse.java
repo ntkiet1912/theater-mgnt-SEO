@@ -1,16 +1,15 @@
 package com.theatermgnt.theatermgnt.movie.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class AgeRatingResponse {
-    private String id;
-    private String code;
-    private String description;
+    String id;
+    String code;
+    String description;
 }

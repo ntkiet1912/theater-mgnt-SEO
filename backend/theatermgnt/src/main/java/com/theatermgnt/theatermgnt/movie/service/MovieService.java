@@ -1,5 +1,12 @@
 package com.theatermgnt.theatermgnt.movie.service;
 
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+
 import com.theatermgnt.theatermgnt.common.exception.ResourceNotFoundException;
 import com.theatermgnt.theatermgnt.movie.dto.request.CreateMovieRequest;
 import com.theatermgnt.theatermgnt.movie.dto.request.UpdateMovieRequest;
@@ -12,49 +19,45 @@ import com.theatermgnt.theatermgnt.movie.mapper.MovieMapper;
 import com.theatermgnt.theatermgnt.movie.repository.AgeRatingRepository;
 import com.theatermgnt.theatermgnt.movie.repository.GenreRepository;
 import com.theatermgnt.theatermgnt.movie.repository.MovieRepository;
+
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class MovieService {
 
-    private final MovieRepository movieRepository;
-    private final AgeRatingRepository ageRatingRepository;
-    private final GenreRepository genreRepository;
-    private final MovieMapper movieMapper;
+    MovieRepository movieRepository;
+    AgeRatingRepository ageRatingRepository;
+    GenreRepository genreRepository;
+    MovieMapper movieMapper;
 
-    // ========== CREATE ==========
-
-    @Transactional
     public MovieResponse createMovie(CreateMovieRequest request) {
-        // Map request to entity
-        Movie movie = movieMapper.toEntity(request);
+
+        Movie movie = movieMapper.toMovie(request);
         movie.setId(UUID.randomUUID().toString());
 
         // Set AgeRating
-        AgeRating ageRating = ageRatingRepository.findById(request.getAgeRatingId())
+        AgeRating ageRating = ageRatingRepository
+                .findById(request.getAgeRatingId())
                 .orElseThrow(() -> new ResourceNotFoundException("AgeRating", "id", request.getAgeRatingId()));
         movie.setAgeRating(ageRating);
 
         // Set Genres
         Set<Genre> genres = request.getGenreIds().stream()
-                .map(id -> genreRepository.findById(id)
+                .map(id -> genreRepository
+                        .findById(id)
                         .orElseThrow(() -> new ResourceNotFoundException("Genre", "id", id)))
                 .collect(Collectors.toSet());
         movie.setGenres(genres);
 
         // Save and return response
         Movie savedMovie = movieRepository.save(movie);
-        return movieMapper.toResponse(savedMovie);
+        return movieMapper.toMovieResponse(savedMovie);
     }
 
     // ========== READ ==========
@@ -69,21 +72,23 @@ public class MovieService {
             // Debug từng movie
             for (int i = 0; i < movies.size(); i++) {
                 Movie movie = movies.get(i);
-                System.out.println("\n📽️ [DEBUG] Movie #" + (i+1) + ":");
+                System.out.println("\n📽️ [DEBUG] Movie #" + (i + 1) + ":");
                 System.out.println("   - ID: " + movie.getId());
                 System.out.println("   - Title: " + movie.getTitle());
                 System.out.println("   - Status: " + movie.getStatus());
                 System.out.println("   - AgeRating: " + movie.getAgeRating());
-                System.out.println("   - AgeRating Code: " + (movie.getAgeRating() != null ? movie.getAgeRating().getCode() : "NULL"));
+                System.out.println("   - AgeRating Code: "
+                        + (movie.getAgeRating() != null ? movie.getAgeRating().getCode() : "NULL"));
                 System.out.println("   - Genres: " + movie.getGenres());
-                System.out.println("   - Genres size: " + (movie.getGenres() != null ? movie.getGenres().size() : "NULL"));
+                System.out.println("   - Genres size: "
+                        + (movie.getGenres() != null ? movie.getGenres().size() : "NULL"));
             }
 
             System.out.println("\n🔄 [DEBUG] Starting mapping process...");
             List<MovieSimpleResponse> responses = movies.stream()
                     .map(movie -> {
                         System.out.println("   Mapping: " + movie.getTitle());
-                        MovieSimpleResponse response = movieMapper.toSimpleResponse(movie);
+                        MovieSimpleResponse response = movieMapper.toMovieSimpleResponse(movie);
                         System.out.println("   ✓ Mapped successfully");
                         return response;
                     })
@@ -102,55 +107,52 @@ public class MovieService {
     }
 
     public MovieResponse getMovieById(String id) {
-        Movie movie = movieRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Movie", "id", id));
-        return movieMapper.toResponse(movie);
+        Movie movie = movieRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Movie", "id", id));
+        return movieMapper.toMovieResponse(movie);
     }
 
     public List<MovieSimpleResponse> getMoviesByStatus(Movie.MovieStatus status) {
         return movieRepository.findByStatus(status).stream()
-                .map(movieMapper::toSimpleResponse)
+                .map(movieMapper::toMovieSimpleResponse)
                 .collect(Collectors.toList());
     }
 
     public List<MovieSimpleResponse> getNowShowingMovies() {
         return movieRepository.findNowShowingMovies().stream()
-                .map(movieMapper::toSimpleResponse)
+                .map(movieMapper::toMovieSimpleResponse)
                 .collect(Collectors.toList());
     }
 
     public List<MovieSimpleResponse> getComingSoonMovies() {
-        return movieRepository.findComingSoonMovies()
-                .stream()
-                .map(movieMapper::toSimpleResponse)
+        return movieRepository.findComingSoonMovies().stream()
+                .map(movieMapper::toMovieSimpleResponse)
                 .collect(Collectors.toList());
     }
 
     public List<MovieSimpleResponse> searchMoviesByTitle(String title) {
         return movieRepository.findByTitleContainingIgnoreCase(title).stream()
-                .map(movieMapper::toSimpleResponse)
+                .map(movieMapper::toMovieSimpleResponse)
                 .collect(Collectors.toList());
     }
 
     public List<MovieSimpleResponse> getMoviesByGenre(String genreId) {
         return movieRepository.findByGenreId(genreId).stream()
-                .map(movieMapper::toSimpleResponse)
+                .map(movieMapper::toMovieSimpleResponse)
                 .collect(Collectors.toList());
     }
 
     // ========== UPDATE ==========
 
-    @Transactional
     public MovieResponse updateMovie(String id, UpdateMovieRequest request) {
-        Movie movie = movieRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Movie", "id", id));
+        Movie movie = movieRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Movie", "id", id));
 
         // Update basic fields using MapStruct
-        movieMapper.updateEntityFromRequest(request, movie);
+        movieMapper.updateMovieFromRequest(request, movie);
 
         // Update AgeRating if provided
         if (request.getAgeRatingId() != null) {
-            AgeRating ageRating = ageRatingRepository.findById(request.getAgeRatingId())
+            AgeRating ageRating = ageRatingRepository
+                    .findById(request.getAgeRatingId())
                     .orElseThrow(() -> new ResourceNotFoundException("AgeRating", "id", request.getAgeRatingId()));
             movie.setAgeRating(ageRating);
         }
@@ -158,31 +160,27 @@ public class MovieService {
         // Update Genres if provided
         if (request.getGenreIds() != null && !request.getGenreIds().isEmpty()) {
             Set<Genre> genres = request.getGenreIds().stream()
-                    .map(genreId -> genreRepository.findById(genreId)
+                    .map(genreId -> genreRepository
+                            .findById(genreId)
                             .orElseThrow(() -> new ResourceNotFoundException("Genre", "id", genreId)))
                     .collect(Collectors.toSet());
             movie.setGenres(genres);
         }
 
         Movie updatedMovie = movieRepository.save(movie);
-        return movieMapper.toResponse(updatedMovie);
+        return movieMapper.toMovieResponse(updatedMovie);
     }
 
-    @Transactional
     public MovieResponse archiveMovie(String id) {
-        Movie movie = movieRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Movie", "id", id));
+        Movie movie = movieRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Movie", "id", id));
         movie.setStatus(Movie.MovieStatus.archived);
         Movie archivedMovie = movieRepository.save(movie);
-        return movieMapper.toResponse(archivedMovie);
+        return movieMapper.toMovieResponse(archivedMovie);
     }
 
     // ========== DELETE ==========
 
-    @Transactional
-    public void deleteMovie(String id) {
-        Movie movie = movieRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Movie", "id", id));
-        movieRepository.delete(movie);
+    public void deleteMovie(String movieId) {
+        movieRepository.deleteById(movieId);
     }
 }

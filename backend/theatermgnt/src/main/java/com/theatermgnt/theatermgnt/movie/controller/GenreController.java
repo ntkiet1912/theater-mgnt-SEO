@@ -1,49 +1,55 @@
 package com.theatermgnt.theatermgnt.movie.controller;
 
-import com.theatermgnt.theatermgnt.movie.dto.request.CreateGenreRequest;
-import com.theatermgnt.theatermgnt.movie.dto.response.ApiResponse;
-import com.theatermgnt.theatermgnt.movie.dto.response.GenreResponse;
-import com.theatermgnt.theatermgnt.movie.service.GenreService;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
+import jakarta.validation.Valid;
+
+import org.springframework.web.bind.annotation.*;
+
+import com.theatermgnt.theatermgnt.common.dto.response.ApiResponse;
+import com.theatermgnt.theatermgnt.movie.dto.request.CreateGenreRequest;
+import com.theatermgnt.theatermgnt.movie.dto.response.GenreResponse;
+import com.theatermgnt.theatermgnt.movie.service.GenreService;
+
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
+
 @RestController
-@RequestMapping("/api/genres")
+@RequestMapping("/genres")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
+@Slf4j
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class GenreController {
 
-    private final GenreService genreService;
+    GenreService genreService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<GenreResponse>> createGenre(
-            @Valid @RequestBody CreateGenreRequest request) {
-        GenreResponse response = genreService.createGenre(request);
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(ApiResponse.success("Tạo thể loại thành công", response));
+    ApiResponse<GenreResponse> createGenre(@Valid @RequestBody CreateGenreRequest request) {
+        return ApiResponse.<GenreResponse>builder()
+                .result(genreService.createGenre(request))
+                .build();
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<GenreResponse>>> getAllGenres() {
-        List<GenreResponse> genres = genreService.getAllGenres();
-        return ResponseEntity.ok(ApiResponse.success(genres));
+    ApiResponse<List<GenreResponse>> getAllGenres() {
+        return ApiResponse.<List<GenreResponse>>builder()
+                .result(genreService.getAllGenres())
+                .build();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<GenreResponse>> getGenreById(@PathVariable String id) {
-        GenreResponse genre = genreService.getGenreById(id);
-        return ResponseEntity.ok(ApiResponse.success(genre));
+    ApiResponse<GenreResponse> getGenreById(@PathVariable("genreId") String genreId) {
+        return ApiResponse.<GenreResponse>builder()
+                .result(genreService.getGenreById(genreId))
+                .build();
     }
 
     @GetMapping("/name/{name}")
-    public ResponseEntity<ApiResponse<GenreResponse>> getGenreByName(@PathVariable String name) {
-        GenreResponse genre = genreService.getGenreByName(name);
-        return ResponseEntity.ok(ApiResponse.success(genre));
+    ApiResponse<GenreResponse> getGenreByName(@PathVariable("genreName") String genreName) {
+        return ApiResponse.<GenreResponse>builder()
+                .result(genreService.getGenreByName(genreName))
+                .build();
     }
 }

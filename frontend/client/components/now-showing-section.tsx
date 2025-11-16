@@ -12,16 +12,29 @@ export function NowShowingSection() {
 
   // Fetch movies khi component mount
   useEffect(() => {
-    const fetchMovies = async () => {
-      setLoading(true)
-      const data = await getNowShowingMovies()
-      const mappedMovies = data.map(mapMovieForDisplay)
-      setMovies(mappedMovies)
-      setLoading(false)
-    }
+      const fetchMovies = async () => {
+        try {
+          setLoading(true)
+          const data = await getNowShowingMovies()
 
-    fetchMovies()
-  }, [])
+          // ✅ Kiểm tra data trước khi map
+          if (data && Array.isArray(data)) {
+            const mappedMovies = data.map(mapMovieForDisplay)
+            setMovies(mappedMovies)
+          } else {
+            console.error('API response is not an array:', data)
+            setMovies([])
+          }
+        } catch (error) {
+          console.error('Error fetching movies:', error)
+          setMovies([])
+        } finally {
+          setLoading(false)
+        }
+      }
+
+      fetchMovies()
+    }, [])
 
   // Lấy danh sách genres từ movies
   const genres = Array.from(new Set(movies.flatMap((m) => m.genre)))

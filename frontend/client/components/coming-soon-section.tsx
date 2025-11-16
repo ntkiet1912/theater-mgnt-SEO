@@ -13,17 +13,30 @@ export function ComingSoonSection() {
   const [notified, setNotified] = useState(false)
 
   // Fetch movies khi component mount
-  useEffect(() => {
-    const fetchMovies = async () => {
-      setLoading(true)
-      const data = await getComingSoonMovies()
-      const mappedMovies = data.map(mapMovieForDisplay)
-      setMovies(mappedMovies)
-      setLoading(false)
-    }
+    useEffect(() => {
+      const fetchMovies = async () => {
+        try {
+          setLoading(true)
+          const data = await getComingSoonMovies()
 
-    fetchMovies()
-  }, [])
+          // ✅ Kiểm tra data trước khi map
+          if (data && Array.isArray(data)) {
+            const mappedMovies = data.map(mapMovieForDisplay)
+            setMovies(mappedMovies)
+          } else {
+            console.error('API response is not an array:', data)
+            setMovies([])
+          }
+        } catch (error) {
+          console.error('Error fetching movies:', error)
+          setMovies([])
+        } finally {
+          setLoading(false)
+        }
+      }
+
+      fetchMovies()
+    }, [])
 
   const handleNotify = (e: React.FormEvent) => {
     e.preventDefault()

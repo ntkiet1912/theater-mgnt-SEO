@@ -1,24 +1,21 @@
 package com.theatermgnt.theatermgnt.movie.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
 
-@Entity
-@Table(name = "age_ratings")
-@Data
+import com.theatermgnt.theatermgnt.common.entity.BaseEntity;
+
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AgeRating {
-
-    @Id
-    @Column(name = "id", length = 50)
-    private String id;
-
-    @Column(name = "code", unique = true, nullable = false, length = 10)
-    private String code;
-
-    @Column(name = "description", columnDefinition = "TEXT")
-    private String description;
+@Builder
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@Entity
+@Table(name = "age_ratings")
+public class AgeRating extends BaseEntity {
+    String code;
+    String description;
 }

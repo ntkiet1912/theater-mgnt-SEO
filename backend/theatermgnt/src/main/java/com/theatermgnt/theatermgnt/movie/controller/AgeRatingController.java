@@ -1,49 +1,55 @@
 package com.theatermgnt.theatermgnt.movie.controller;
 
-import com.theatermgnt.theatermgnt.movie.dto.request.CreateAgeRatingRequest;
-import com.theatermgnt.theatermgnt.movie.dto.response.AgeRatingResponse;
-import com.theatermgnt.theatermgnt.movie.dto.response.ApiResponse;
-import com.theatermgnt.theatermgnt.movie.service.AgeRatingService;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
+import jakarta.validation.Valid;
+
+import org.springframework.web.bind.annotation.*;
+
+import com.theatermgnt.theatermgnt.common.dto.response.ApiResponse;
+import com.theatermgnt.theatermgnt.movie.dto.request.CreateAgeRatingRequest;
+import com.theatermgnt.theatermgnt.movie.dto.response.AgeRatingResponse;
+import com.theatermgnt.theatermgnt.movie.service.AgeRatingService;
+
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
+
 @RestController
-@RequestMapping("/api/age-ratings")
+@RequestMapping("/age_ratings")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
+@Slf4j
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AgeRatingController {
 
-    private final AgeRatingService ageRatingService;
+    AgeRatingService ageRatingService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<AgeRatingResponse>> createAgeRating(
-            @Valid @RequestBody CreateAgeRatingRequest request) {
-        AgeRatingResponse response = ageRatingService.createAgeRating(request);
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(ApiResponse.success("Tạo phân loại tuổi thành công", response));
+    ApiResponse<AgeRatingResponse> createAgeRating(@Valid @RequestBody CreateAgeRatingRequest request) {
+        return ApiResponse.<AgeRatingResponse>builder()
+                .result(ageRatingService.createAgeRating(request))
+                .build();
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<AgeRatingResponse>>> getAllAgeRatings() {
-        List<AgeRatingResponse> ageRatings = ageRatingService.getAllAgeRatings();
-        return ResponseEntity.ok(ApiResponse.success(ageRatings));
+    ApiResponse<List<AgeRatingResponse>> getAllAgeRatings() {
+        return ApiResponse.<List<AgeRatingResponse>>builder()
+                .result(ageRatingService.getAllAgeRatings())
+                .build();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<AgeRatingResponse>> getAgeRatingById(@PathVariable String id) {
-        AgeRatingResponse ageRating = ageRatingService.getAgeRatingById(id);
-        return ResponseEntity.ok(ApiResponse.success(ageRating));
+    ApiResponse<AgeRatingResponse> getAgeRatingById(@PathVariable("ageRatingId") String ageRatingId) {
+        return ApiResponse.<AgeRatingResponse>builder()
+                .result(ageRatingService.getAgeRatingById(ageRatingId))
+                .build();
     }
 
     @GetMapping("/code/{code}")
-    public ResponseEntity<ApiResponse<AgeRatingResponse>> getAgeRatingByCode(@PathVariable String code) {
-        AgeRatingResponse ageRating = ageRatingService.getAgeRatingByCode(code);
-        return ResponseEntity.ok(ApiResponse.success(ageRating));
+    ApiResponse<AgeRatingResponse> getAgeRatingByCode(@PathVariable("ageRatingCode") String ageRatingCode) {
+        return ApiResponse.<AgeRatingResponse>builder()
+                .result(ageRatingService.getAgeRatingByCode(ageRatingCode))
+                .build();
     }
 }

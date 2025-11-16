@@ -1,16 +1,15 @@
 package com.theatermgnt.theatermgnt.movie.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class GenreResponse {
-    private String id;
-    private String name;
-    private Integer movieCount; // Số lượng phim thuộc thể loại này (optional)
+    String id;
+    String name;
+    Integer movieCount;
 }

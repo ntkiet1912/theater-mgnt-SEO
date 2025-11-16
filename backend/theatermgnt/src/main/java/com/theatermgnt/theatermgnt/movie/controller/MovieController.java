@@ -1,107 +1,116 @@
 package com.theatermgnt.theatermgnt.movie.controller;
 
+import java.util.List;
+
+import jakarta.validation.Valid;
+
+import org.springframework.web.bind.annotation.*;
+
+import com.theatermgnt.theatermgnt.common.dto.response.ApiResponse;
 import com.theatermgnt.theatermgnt.movie.dto.request.CreateMovieRequest;
 import com.theatermgnt.theatermgnt.movie.dto.request.UpdateMovieRequest;
-import com.theatermgnt.theatermgnt.movie.dto.response.ApiResponse;
 import com.theatermgnt.theatermgnt.movie.dto.response.MovieResponse;
 import com.theatermgnt.theatermgnt.movie.dto.response.MovieSimpleResponse;
 import com.theatermgnt.theatermgnt.movie.entity.Movie;
 import com.theatermgnt.theatermgnt.movie.service.MovieService;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/movies")
 @RequiredArgsConstructor
-//@CrossOrigin(origins = "*")
+@Slf4j
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class MovieController {
 
-    private final MovieService movieService;
+    MovieService movieService;
 
     // ========== CREATE ==========
 
     @PostMapping
-    public ResponseEntity<ApiResponse<MovieResponse>> createMovie(
-            @Valid @RequestBody CreateMovieRequest request) {
+    ApiResponse<MovieResponse> createMovie(@Valid @RequestBody CreateMovieRequest request) {
         MovieResponse response = movieService.createMovie(request);
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(ApiResponse.success("Tạo phim thành công", response));
+        return ApiResponse.<MovieResponse>builder().result(response).build();
     }
 
     // ========== READ ==========
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<MovieSimpleResponse>>> getAllMovies() {
-        List<MovieSimpleResponse> movies = movieService.getAllMovies();
-        return ResponseEntity.ok(ApiResponse.success(movies));
+    ApiResponse<List<MovieSimpleResponse>> getAllMovies() {
+        return ApiResponse.<List<MovieSimpleResponse>>builder()
+                .result(movieService.getAllMovies())
+                .build();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<MovieResponse>> getMovieById(@PathVariable String id) {
-        MovieResponse movie = movieService.getMovieById(id);
-        return ResponseEntity.ok(ApiResponse.success(movie));
+    ApiResponse<MovieResponse> getMovieById(@PathVariable("id") String id) {
+        return ApiResponse.<MovieResponse>builder()
+                .result(movieService.getMovieById(id))
+                .build();
     }
 
     @GetMapping("/status/{status}")
-    public ResponseEntity<ApiResponse<List<MovieSimpleResponse>>> getMoviesByStatus(
-            @PathVariable Movie.MovieStatus status) {
-        List<MovieSimpleResponse> movies = movieService.getMoviesByStatus(status);
-        return ResponseEntity.ok(ApiResponse.success(movies));
+    ApiResponse<List<MovieSimpleResponse>> getMoviesByStatus(
+            @PathVariable("status") Movie.MovieStatus status) {
+        return ApiResponse.<List<MovieSimpleResponse>>builder()
+                .result(movieService.getMoviesByStatus(status))
+                .build();
     }
 
     @GetMapping("/now-showing")
-    public ResponseEntity<ApiResponse<List<MovieSimpleResponse>>> getNowShowingMovies() {
-        List<MovieSimpleResponse> movies = movieService.getNowShowingMovies();
-        return ResponseEntity.ok(ApiResponse.success(movies));
+    ApiResponse<List<MovieSimpleResponse>> getNowShowingMovies() {
+        return ApiResponse.<List<MovieSimpleResponse>>builder()
+                .result(movieService.getNowShowingMovies())
+                .build();
     }
 
     @GetMapping("/coming-soon")
-    public ResponseEntity<ApiResponse<List<MovieSimpleResponse>>> getComingSoonMovies() {
-        List<MovieSimpleResponse> movies = movieService.getComingSoonMovies();
-        return ResponseEntity.ok(ApiResponse.success(movies));
+    ApiResponse<List<MovieSimpleResponse>> getComingSoonMovies() {
+        return ApiResponse.<List<MovieSimpleResponse>>builder()
+                .result(movieService.getComingSoonMovies())
+                .build();
     }
 
     @GetMapping("/search")
-    public ResponseEntity<ApiResponse<List<MovieSimpleResponse>>> searchMovies(
-            @RequestParam String title) {
-        List<MovieSimpleResponse> movies = movieService.searchMoviesByTitle(title);
-        return ResponseEntity.ok(ApiResponse.success(movies));
+    ApiResponse<List<MovieSimpleResponse>> searchMoviesByTitle(@RequestParam("title") String title) {
+        return ApiResponse.<List<MovieSimpleResponse>>builder()
+                .result(movieService.searchMoviesByTitle(title))
+                .build();
     }
 
     @GetMapping("/genre/{genreId}")
-    public ResponseEntity<ApiResponse<List<MovieSimpleResponse>>> getMoviesByGenre(
-            @PathVariable String genreId) {
-        List<MovieSimpleResponse> movies = movieService.getMoviesByGenre(genreId);
-        return ResponseEntity.ok(ApiResponse.success(movies));
+    ApiResponse<List<MovieSimpleResponse>> getMoviesByGenre(@PathVariable("genreId") String genreId) {
+        return ApiResponse.<List<MovieSimpleResponse>>builder()
+                .result(movieService.getMoviesByGenre(genreId))
+                .build();
     }
 
     // ========== UPDATE ==========
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<MovieResponse>> updateMovie(
-            @PathVariable String id,
+    ApiResponse<MovieResponse> updateMovie(
+            @PathVariable("id") String id,
             @Valid @RequestBody UpdateMovieRequest request) {
-        MovieResponse response = movieService.updateMovie(id, request);
-        return ResponseEntity.ok(ApiResponse.success("Cập nhật phim thành công", response));
+        return ApiResponse.<MovieResponse>builder()
+                .result(movieService.updateMovie(id, request))
+                .build();
     }
 
     @PatchMapping("/{id}/archive")
-    public ResponseEntity<ApiResponse<MovieResponse>> archiveMovie(@PathVariable String id) {
-        MovieResponse response = movieService.archiveMovie(id);
-        return ResponseEntity.ok(ApiResponse.success("Lưu trữ phim thành công", response));
+    ApiResponse<MovieResponse> archiveMovie(@PathVariable("id") String id) {
+        return ApiResponse.<MovieResponse>builder()
+                .result(movieService.archiveMovie(id))
+                .build();
     }
 
     // ========== DELETE ==========
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<Void>> deleteMovie(@PathVariable String id) {
+    ApiResponse<String> deleteMovie(@PathVariable("id") String id) {
         movieService.deleteMovie(id);
-        return ResponseEntity.ok(ApiResponse.success("Xóa phim thành công", null));
+        return ApiResponse.<String>builder().result("Delete movie successfully").build();
     }
 }

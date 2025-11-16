@@ -1,27 +1,18 @@
 package com.theatermgnt.theatermgnt.movie.mapper;
 
-import com.theatermgnt.theatermgnt.movie.dto.response.GenreResponse;
-import com.theatermgnt.theatermgnt.movie.entity.Genre;
+import java.util.List;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
-import java.util.List;
+import com.theatermgnt.theatermgnt.movie.dto.response.GenreResponse;
+import com.theatermgnt.theatermgnt.movie.entity.Genre;
 
-@Mapper(
-        componentModel = "spring",
-        unmappedTargetPolicy = ReportingPolicy.IGNORE
-)
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface GenreMapper {
-
-    /**
-     * Convert Genre entity to GenreResponse
-     */
     @Mapping(target = "movieCount", expression = "java(genre.getMovies() != null ? genre.getMovies().size() : 0)")
-    GenreResponse toResponse(Genre genre);
+    GenreResponse toGenreResponse(Genre genre);
 
-    /**
-     * Convert List<Genre> to List<GenreResponse>
-     */
-    List<GenreResponse> toResponseList(List<Genre> genres);
+    List<GenreResponse> toGenreResponseList(List<Genre> genres);
 }

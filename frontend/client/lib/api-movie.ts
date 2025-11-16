@@ -14,29 +14,47 @@ const api = axios.create({
 
 api.interceptors.response.use(
   (response) => {
-    // Nếu response có cấu trúc { success, message, data }
-    // Tự động trả về phần data bên trong
+    console.log('📦 Raw API Response:', response.data)
+
+    // Nếu response có cấu trúc { result: [...] }
+    if (response.data && typeof response.data === 'object' && 'result' in response.data) {
+      console.log('✅ Unwrapping result field')
+      return {
+        ...response,
+        data: response.data.result
+      }
+    }
+
+    // Nếu response có cấu trúc { data: [...] }
     if (response.data && typeof response.data === 'object' && 'data' in response.data) {
+      console.log('✅ Unwrapping data field')
       return {
         ...response,
         data: response.data.data
       }
     }
+
+    // Trả về response.data nguyên bản
+    console.log('✅ Returning raw response.data')
     return response
   },
   (error) => {
+    console.error('❌ API Error:', error)
     return Promise.reject(error)
   }
 )
-
 // ==================== MOVIE APIs ====================
 export async function getMovieById(id: string) {
   try {
     console.log('🔍 API Call: GET', `${API_BASE_URL}/movies/${id}`)
 
-    // ✅ FIX: Sửa syntax từ api.get`...` thành api.get(...)
-    const response = await api.get(`/movies/${id}`)
+    // ✅ Validate ID trước khi gọi API
+    if (!id || id === 'undefined' || id === 'null') {
+      console.error('❌ Invalid movie ID:', id)
+      return null
+    }
 
+    const response = await api.get(`/movies/${id}`)
     console.log('✅ API Response (unwrapped):', response.data)
 
     if (!response.data) {
@@ -52,14 +70,10 @@ export async function getMovieById(id: string) {
       statusText: error.response?.statusText,
       data: error.response?.data,
       url: error.config?.url,
-      fullError: error
     })
 
-    if (error.response?.status === 404) {
-      return null
-    }
-
-    throw error
+    // ✅ Trả về null thay vì throw để tránh crash page
+    return null
   }
 }
 
