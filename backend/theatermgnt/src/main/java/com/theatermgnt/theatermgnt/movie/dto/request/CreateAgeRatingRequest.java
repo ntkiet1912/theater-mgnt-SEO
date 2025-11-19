@@ -13,15 +13,12 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CreateAgeRatingRequest {
 
-    @NotBlank(message = "ID không được để trống")
-    @Size(max = 50, message = "ID không được quá 50 ký tự")
+    @Size(max = 50, message = "INVALID_AGERATING_ID")
     String id;
 
-    @NotBlank(message = "Code không được để trống")
-    @Size(min = 1, max = 10, message = "Code phải từ 1-10 ký tự")
+    @Size(min = 1, max = 10, message = "INVALID_AGERATING_CODE")
     String code;
 
-    @NotBlank(message = "Description không được để trống")
-    @Size(max = 500, message = "Description không được quá 500 ký tự")
+    @Size(max = 500, message = "INVALID_AGERATING_DESCRIPTION")
     String description;
 }

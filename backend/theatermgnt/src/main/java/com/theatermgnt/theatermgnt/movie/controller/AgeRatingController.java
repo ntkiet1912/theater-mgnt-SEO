@@ -40,16 +40,16 @@ public class AgeRatingController {
     }
 
     @GetMapping("/{id}")
-    ApiResponse<AgeRatingResponse> getAgeRatingById(@PathVariable("ageRatingId") String ageRatingId) {
+    ApiResponse<AgeRatingResponse> getAgeRatingById(@PathVariable("id") String id) {
         return ApiResponse.<AgeRatingResponse>builder()
-                .result(ageRatingService.getAgeRatingById(ageRatingId))
+                .result(ageRatingService.getAgeRatingById(id))
                 .build();
     }
 
     @GetMapping("/code/{code}")
-    ApiResponse<AgeRatingResponse> getAgeRatingByCode(@PathVariable("ageRatingCode") String ageRatingCode) {
+    ApiResponse<AgeRatingResponse> getAgeRatingByCode(@PathVariable("code") String code) {
         return ApiResponse.<AgeRatingResponse>builder()
-                .result(ageRatingService.getAgeRatingByCode(ageRatingCode))
+                .result(ageRatingService.getAgeRatingByCode(code))
                 .build();
     }
 }

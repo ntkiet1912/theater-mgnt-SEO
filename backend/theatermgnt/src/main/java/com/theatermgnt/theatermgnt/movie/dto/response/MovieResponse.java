@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.theatermgnt.theatermgnt.common.enums.MovieStatus;
 import com.theatermgnt.theatermgnt.movie.entity.Movie;
 
 import lombok.*;
@@ -32,7 +33,7 @@ public class MovieResponse {
     @JsonFormat(pattern = "yyyy-MM-dd")
     LocalDate endDate;
 
-    Movie.MovieStatus status;
+    MovieStatus status;
 
     // Nested objects
     AgeRatingInfo ageRating;

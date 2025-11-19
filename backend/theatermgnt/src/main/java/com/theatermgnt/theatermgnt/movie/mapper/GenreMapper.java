@@ -2,6 +2,7 @@ package com.theatermgnt.theatermgnt.movie.mapper;
 
 import java.util.List;
 
+import com.theatermgnt.theatermgnt.movie.dto.request.CreateGenreRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
@@ -15,4 +16,6 @@ public interface GenreMapper {
     GenreResponse toGenreResponse(Genre genre);
 
     List<GenreResponse> toGenreResponseList(List<Genre> genres);
+    @Mapping(target = "movies", ignore = true)
+    Genre toGenre(CreateGenreRequest request);
 }

@@ -7,6 +7,7 @@ import java.util.Set;
 import jakarta.persistence.*;
 
 import com.theatermgnt.theatermgnt.common.entity.BaseEntity;
+import com.theatermgnt.theatermgnt.common.enums.MovieStatus;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -47,12 +48,6 @@ public class Movie extends BaseEntity {
             joinColumns = @JoinColumn(name = "movie_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id"))
     Set<Genre> genres = new HashSet<>();
-
-    public enum MovieStatus {
-        coming_soon,
-        now_showing,
-        archived
-    }
 
     @Override
     public boolean equals(Object o) {

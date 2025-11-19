@@ -40,16 +40,16 @@ public class GenreController {
     }
 
     @GetMapping("/{id}")
-    ApiResponse<GenreResponse> getGenreById(@PathVariable("genreId") String genreId) {
+    ApiResponse<GenreResponse> getGenreById(@PathVariable("id") String id) {
         return ApiResponse.<GenreResponse>builder()
-                .result(genreService.getGenreById(genreId))
+                .result(genreService.getGenreById(id))
                 .build();
     }
 
     @GetMapping("/name/{name}")
-    ApiResponse<GenreResponse> getGenreByName(@PathVariable("genreName") String genreName) {
+    ApiResponse<GenreResponse> getGenreByName(@PathVariable("name") String name) {
         return ApiResponse.<GenreResponse>builder()
-                .result(genreService.getGenreByName(genreName))
+                .result(genreService.getGenreByName(name))
                 .build();
     }
 }
