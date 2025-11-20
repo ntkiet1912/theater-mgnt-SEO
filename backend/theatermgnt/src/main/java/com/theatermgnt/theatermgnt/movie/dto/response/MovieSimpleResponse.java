@@ -3,6 +3,7 @@ package com.theatermgnt.theatermgnt.movie.dto.response;
 import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.theatermgnt.theatermgnt.common.enums.MovieStatus;
 import com.theatermgnt.theatermgnt.movie.entity.Movie;
 
 import lombok.*;
@@ -27,7 +28,7 @@ public class MovieSimpleResponse {
     @JsonFormat(pattern = "yyyy-MM-dd")
     LocalDate releaseDate;
 
-    Movie.MovieStatus status;
+    MovieStatus status;
     String ageRatingCode;
     String director;
 }

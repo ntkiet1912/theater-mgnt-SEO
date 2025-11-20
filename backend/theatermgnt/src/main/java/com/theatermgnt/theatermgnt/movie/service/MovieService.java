@@ -7,7 +7,9 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.theatermgnt.theatermgnt.common.exception.ResourceNotFoundException;
+import com.theatermgnt.theatermgnt.common.enums.MovieStatus;
+import com.theatermgnt.theatermgnt.common.exception.AppException;
+import com.theatermgnt.theatermgnt.common.exception.ErrorCode;
 import com.theatermgnt.theatermgnt.movie.dto.request.CreateMovieRequest;
 import com.theatermgnt.theatermgnt.movie.dto.request.UpdateMovieRequest;
 import com.theatermgnt.theatermgnt.movie.dto.response.MovieResponse;
@@ -15,6 +17,7 @@ import com.theatermgnt.theatermgnt.movie.dto.response.MovieSimpleResponse;
 import com.theatermgnt.theatermgnt.movie.entity.AgeRating;
 import com.theatermgnt.theatermgnt.movie.entity.Genre;
 import com.theatermgnt.theatermgnt.movie.entity.Movie;
+
 import com.theatermgnt.theatermgnt.movie.mapper.MovieMapper;
 import com.theatermgnt.theatermgnt.movie.repository.AgeRatingRepository;
 import com.theatermgnt.theatermgnt.movie.repository.GenreRepository;
@@ -36,95 +39,60 @@ public class MovieService {
     GenreRepository genreRepository;
     MovieMapper movieMapper;
 
+    // ========== CREATE ==========
     public MovieResponse createMovie(CreateMovieRequest request) {
-
-        Movie movie = movieMapper.toMovie(request);
-        movie.setId(UUID.randomUUID().toString());
-
-        // Set AgeRating
+        // Validate AgeRating exists
         AgeRating ageRating = ageRatingRepository
                 .findById(request.getAgeRatingId())
-                .orElseThrow(() -> new ResourceNotFoundException("AgeRating", "id", request.getAgeRatingId()));
-        movie.setAgeRating(ageRating);
+                .orElseThrow(() -> new AppException(ErrorCode.AGERATING_NOT_EXISTED));
 
-        // Set Genres
+        // Validate Genres exist
         Set<Genre> genres = request.getGenreIds().stream()
                 .map(id -> genreRepository
                         .findById(id)
-                        .orElseThrow(() -> new ResourceNotFoundException("Genre", "id", id)))
+                        .orElseThrow(() -> new AppException(ErrorCode.GENRE_NOT_EXISTED)))
                 .collect(Collectors.toSet());
+
+        // Map and set relationships
+        Movie movie = movieMapper.toMovie(request);
+        movie.setId(UUID.randomUUID().toString());
+        movie.setAgeRating(ageRating);
         movie.setGenres(genres);
 
         // Save and return response
         Movie savedMovie = movieRepository.save(movie);
+        log.info("Created movie with id: {}", savedMovie.getId());
         return movieMapper.toMovieResponse(savedMovie);
     }
 
     // ========== READ ==========
-
     public List<MovieSimpleResponse> getAllMovies() {
-        try {
-            System.out.println("🔍 [DEBUG] Starting getAllMovies...");
-
-            List<Movie> movies = movieRepository.findAllWithGenres();
-            System.out.println("✅ [DEBUG] Found " + movies.size() + " movies from DB");
-
-            // Debug từng movie
-            for (int i = 0; i < movies.size(); i++) {
-                Movie movie = movies.get(i);
-                System.out.println("\n📽️ [DEBUG] Movie #" + (i + 1) + ":");
-                System.out.println("   - ID: " + movie.getId());
-                System.out.println("   - Title: " + movie.getTitle());
-                System.out.println("   - Status: " + movie.getStatus());
-                System.out.println("   - AgeRating: " + movie.getAgeRating());
-                System.out.println("   - AgeRating Code: "
-                        + (movie.getAgeRating() != null ? movie.getAgeRating().getCode() : "NULL"));
-                System.out.println("   - Genres: " + movie.getGenres());
-                System.out.println("   - Genres size: "
-                        + (movie.getGenres() != null ? movie.getGenres().size() : "NULL"));
-            }
-
-            System.out.println("\n🔄 [DEBUG] Starting mapping process...");
-            List<MovieSimpleResponse> responses = movies.stream()
-                    .map(movie -> {
-                        System.out.println("   Mapping: " + movie.getTitle());
-                        MovieSimpleResponse response = movieMapper.toMovieSimpleResponse(movie);
-                        System.out.println("   ✓ Mapped successfully");
-                        return response;
-                    })
-                    .collect(Collectors.toList());
-
-            System.out.println("✅ [DEBUG] Successfully mapped to " + responses.size() + " responses");
-            return responses;
-
-        } catch (Exception e) {
-            System.err.println("❌ [ERROR] Exception in getAllMovies:");
-            System.err.println("   Message: " + e.getMessage());
-            System.err.println("   Class: " + e.getClass().getName());
-            e.printStackTrace();
-            throw e;
-        }
+        List<Movie> movies = movieRepository.findAllWithGenres();
+        return movies.stream()
+                .map(movieMapper::toMovieSimpleResponse)
+                .collect(Collectors.toList());
     }
 
     public MovieResponse getMovieById(String id) {
-        Movie movie = movieRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Movie", "id", id));
+        Movie movie = movieRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.MOVIE_NOT_EXISTED));
         return movieMapper.toMovieResponse(movie);
     }
 
-    public List<MovieSimpleResponse> getMoviesByStatus(Movie.MovieStatus status) {
+    public List<MovieSimpleResponse> getMoviesByStatus(MovieStatus status) {
         return movieRepository.findByStatus(status).stream()
                 .map(movieMapper::toMovieSimpleResponse)
                 .collect(Collectors.toList());
     }
 
     public List<MovieSimpleResponse> getNowShowingMovies() {
-        return movieRepository.findNowShowingMovies().stream()
+        return movieRepository.findNowShowingMovies(MovieStatus.now_showing).stream()
                 .map(movieMapper::toMovieSimpleResponse)
                 .collect(Collectors.toList());
     }
 
     public List<MovieSimpleResponse> getComingSoonMovies() {
-        return movieRepository.findComingSoonMovies().stream()
+        return movieRepository.findComingSoonMovies(MovieStatus.coming_soon).stream()
                 .map(movieMapper::toMovieSimpleResponse)
                 .collect(Collectors.toList());
     }
@@ -136,15 +104,20 @@ public class MovieService {
     }
 
     public List<MovieSimpleResponse> getMoviesByGenre(String genreId) {
+        // Validate Genre exists
+        if (!genreRepository.existsById(genreId)) {
+            throw new AppException(ErrorCode.GENRE_NOT_EXISTED);
+        }
+
         return movieRepository.findByGenreId(genreId).stream()
                 .map(movieMapper::toMovieSimpleResponse)
                 .collect(Collectors.toList());
     }
 
     // ========== UPDATE ==========
-
     public MovieResponse updateMovie(String id, UpdateMovieRequest request) {
-        Movie movie = movieRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Movie", "id", id));
+        Movie movie = movieRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.MOVIE_NOT_EXISTED));
 
         // Update basic fields using MapStruct
         movieMapper.updateMovieFromRequest(request, movie);
@@ -153,7 +126,7 @@ public class MovieService {
         if (request.getAgeRatingId() != null) {
             AgeRating ageRating = ageRatingRepository
                     .findById(request.getAgeRatingId())
-                    .orElseThrow(() -> new ResourceNotFoundException("AgeRating", "id", request.getAgeRatingId()));
+                    .orElseThrow(() -> new AppException(ErrorCode.AGERATING_NOT_EXISTED));
             movie.setAgeRating(ageRating);
         }
 
@@ -162,25 +135,30 @@ public class MovieService {
             Set<Genre> genres = request.getGenreIds().stream()
                     .map(genreId -> genreRepository
                             .findById(genreId)
-                            .orElseThrow(() -> new ResourceNotFoundException("Genre", "id", genreId)))
+                            .orElseThrow(() -> new AppException(ErrorCode.GENRE_NOT_EXISTED)))
                     .collect(Collectors.toSet());
             movie.setGenres(genres);
         }
 
         Movie updatedMovie = movieRepository.save(movie);
+        log.info("Updated movie with id: {}", updatedMovie.getId());
         return movieMapper.toMovieResponse(updatedMovie);
     }
 
     public MovieResponse archiveMovie(String id) {
-        Movie movie = movieRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Movie", "id", id));
-        movie.setStatus(Movie.MovieStatus.archived);
+        Movie movie = movieRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.MOVIE_NOT_EXISTED));
+        movie.setStatus(MovieStatus.archived);
         Movie archivedMovie = movieRepository.save(movie);
+        log.info("Archived movie with id: {}", archivedMovie.getId());
         return movieMapper.toMovieResponse(archivedMovie);
     }
 
     // ========== DELETE ==========
-
     public void deleteMovie(String movieId) {
-        movieRepository.deleteById(movieId);
+        Movie movie = movieRepository.findById(movieId)
+                .orElseThrow(() -> new AppException(ErrorCode.MOVIE_NOT_EXISTED));
+        movieRepository.delete(movie);
+        log.info("Deleted movie with id: {}", movieId);
     }
 }

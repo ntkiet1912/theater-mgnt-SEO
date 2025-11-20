@@ -2,6 +2,7 @@ package com.theatermgnt.theatermgnt.movie.mapper;
 
 import java.util.List;
 
+import com.theatermgnt.theatermgnt.movie.dto.request.CreateAgeRatingRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
@@ -14,4 +15,6 @@ public interface AgeRatingMapper {
     AgeRatingResponse toAgeRatingResponse(AgeRating ageRating);
 
     List<AgeRatingResponse> toAgeRatingResponseList(List<AgeRating> ageRatings);
+
+    AgeRating toAgeRating(CreateAgeRatingRequest request);
 }

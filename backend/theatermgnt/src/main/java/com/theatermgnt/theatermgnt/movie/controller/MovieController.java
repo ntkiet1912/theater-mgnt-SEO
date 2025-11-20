@@ -2,6 +2,7 @@ package com.theatermgnt.theatermgnt.movie.controller;
 
 import java.util.List;
 
+import com.theatermgnt.theatermgnt.common.enums.MovieStatus;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.*;
@@ -54,7 +55,7 @@ public class MovieController {
 
     @GetMapping("/status/{status}")
     ApiResponse<List<MovieSimpleResponse>> getMoviesByStatus(
-            @PathVariable("status") Movie.MovieStatus status) {
+            @PathVariable("status") MovieStatus status) {
         return ApiResponse.<List<MovieSimpleResponse>>builder()
                 .result(movieService.getMoviesByStatus(status))
                 .build();

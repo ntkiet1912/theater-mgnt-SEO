@@ -13,11 +13,11 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CreateGenreRequest {
 
-    @NotBlank(message = "ID không được để trống")
-    @Size(max = 50, message = "ID không được quá 50 ký tự")
+    @NotBlank(message = "GENRE_ID_REQUIRED")
+    @Size(max = 50, message = "INVALID_GENRE_ID")
     String id;
 
-    @NotBlank(message = "Name không được để trống")
-    @Size(max = 100, message = "Name không được quá 100 ký tự")
+    @NotBlank(message = "GENRE_NAME_REQUIRED")
+    @Size(max = 100, message = "INVALID_GENRE_NAME")
     String name;
 }
