@@ -187,11 +187,7 @@ public class AuthenticationService {
 
         // Publish event to send email
         try{
-            eventPublisher.publishEvent(new PasswordResetEvent(
-                    this,
-                    account.get(),
-                    otpCode
-            ));
+            eventPublisher.publishEvent(new PasswordResetEvent(account.get(), otpCode));
             log.info("Password reset requested for account: {}", account.get().getEmail());
         } catch (Exception e){
             // Log error but do not throw to avoid user enumeration

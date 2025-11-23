@@ -31,7 +31,7 @@ public class EmailTemplateFactory {
 
         String templateName = switch (emailType) {
             case RESET_PASSWORD -> "email/reset-password";
-            case WELCOME_EMAIL -> "email/welcome-email";
+            case WELCOME_STAFF -> "email/welcome-staff";
             case NOTIFICATION_EMAIL -> "email/notification-email";
         };
         return templateEngine.process(templateName, context);

@@ -1,6 +1,7 @@
 package com.theatermgnt.theatermgnt.staff.controller;
 
 import com.theatermgnt.theatermgnt.common.dto.response.ApiResponse;
+import com.theatermgnt.theatermgnt.staff.dto.request.SearchStaffRequest;
 import com.theatermgnt.theatermgnt.staff.dto.request.StaffAccountCreationRequest;
 import com.theatermgnt.theatermgnt.staff.dto.request.StaffProfileUpdateRequest;
 import com.theatermgnt.theatermgnt.staff.dto.response.StaffResponse;
@@ -49,6 +50,13 @@ public class StaffController {
     public ApiResponse<StaffResponse> getMyInfo() {
         return ApiResponse.<StaffResponse>builder()
                 .result(staffService.getMyInfo())
+                .build();
+    }
+
+    @GetMapping("/search")
+    public ApiResponse<List<StaffResponse>> searchStaff(@ModelAttribute SearchStaffRequest request) {
+        return ApiResponse.<List<StaffResponse>>builder()
+                .result(staffService.searchStaff(request))
                 .build();
     }
 

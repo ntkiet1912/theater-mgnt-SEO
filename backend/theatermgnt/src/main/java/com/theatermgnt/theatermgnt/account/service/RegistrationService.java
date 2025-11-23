@@ -10,9 +10,11 @@ import com.theatermgnt.theatermgnt.customer.dto.response.CustomerResponse;
 import com.theatermgnt.theatermgnt.staff.dto.response.StaffResponse;
 import com.theatermgnt.theatermgnt.authorization.entity.Role;
 import com.theatermgnt.theatermgnt.staff.entity.Staff;
+import com.theatermgnt.theatermgnt.staff.event.StaffCreatedEvent;
 import com.theatermgnt.theatermgnt.staff.mapper.StaffMapper;
 import com.theatermgnt.theatermgnt.authorization.repository.RoleRepository;
 import com.theatermgnt.theatermgnt.staff.service.StaffService;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,6 +46,7 @@ public class RegistrationService {
     RoleRepository roleRepository;
     AccountRepository accountRepository;
     CustomerRepository customerRepository;
+    ApplicationEventPublisher eventPublisher;
 
     @Transactional
     public CustomerResponse registerCustomerAccount(CustomerAccountCreationRequest request) {
@@ -98,6 +101,8 @@ public class RegistrationService {
         savedAccount.setAccountType(AccountType.INTERNAL);
 
         Staff savedStaff = staffService.createStaffProfile(request, savedAccount, roles);
+        eventPublisher.publishEvent(new StaffCreatedEvent(savedStaff,request.getPassword()));
+
         return staffMapper.toStaffResponse(savedStaff);
     }
 }

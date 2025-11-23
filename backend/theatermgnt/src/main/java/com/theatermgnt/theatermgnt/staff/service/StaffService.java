@@ -1,6 +1,7 @@
 package com.theatermgnt.theatermgnt.staff.service;
 
 import com.theatermgnt.theatermgnt.constant.PredefinedRole;
+import com.theatermgnt.theatermgnt.staff.dto.request.SearchStaffRequest;
 import com.theatermgnt.theatermgnt.staff.dto.request.StaffAccountCreationRequest;
 import com.theatermgnt.theatermgnt.staff.dto.request.StaffProfileUpdateRequest;
 import com.theatermgnt.theatermgnt.staff.dto.response.StaffResponse;
@@ -72,6 +73,13 @@ public class StaffService {
         return staffMapper.toStaffResponse(staff);
     }
 
+//    /// SEARCH STAFF BY NAME/EMAIL/PHONE
+    public List<StaffResponse> searchStaff(SearchStaffRequest request) {
+        List<Staff> staffs = staffRepository.findAllByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(request.getKeyword(), request.getKeyword());
+        return staffs.stream()
+                .map(staffMapper::toStaffResponse)
+                .toList();
+    }
 
 
     /// UPDATE STAFF PROFILE
