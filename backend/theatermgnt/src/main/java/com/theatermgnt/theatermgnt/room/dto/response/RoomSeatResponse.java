@@ -1,8 +1,9 @@
-package com.theatermgnt.theatermgnt.room.dto.request;
+package com.theatermgnt.theatermgnt.room.dto.response;
 
 
 import com.theatermgnt.theatermgnt.common.enums.RoomType;
 import com.theatermgnt.theatermgnt.seat.dto.request.SeatLayoutRequest;
+import com.theatermgnt.theatermgnt.seat.dto.response.SeatLayoutResponse;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -15,17 +16,14 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RoomCreationRequest {
-
-    @NotNull
+public class RoomSeatResponse {
+    String id;
     String cinemaId;
-
-    @Size(min = 3, message = "ROOM_NAME_INVALID")
+    String cinemaName;
     String name;
+    String roomType;
+    int totalSeats;
 
-    @NotNull
-    RoomType roomType;
-
-    List<SeatLayoutRequest> seatLayout;
+    List<SeatLayoutResponse> seats;
 
 }
