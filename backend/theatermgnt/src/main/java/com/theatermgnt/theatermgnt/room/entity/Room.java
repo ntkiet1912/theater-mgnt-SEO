@@ -24,14 +24,17 @@ import java.util.List;
 @Where(clause = "deleted = false")
 public class Room extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cinemaId", nullable = false)
+    @JoinColumn(name = "cinema_id", nullable = false)
     Cinema cinema;
     String name;
 
-    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, fetch =  FetchType.LAZY)
+    @OneToMany(fetch =  FetchType.LAZY, mappedBy = "room", cascade = CascadeType.ALL)
     List<Seat> seats;
 
     @Enumerated(EnumType.STRING)
     RoomType roomType;
+
+    String status;
+
     Integer totalSeats;
 }

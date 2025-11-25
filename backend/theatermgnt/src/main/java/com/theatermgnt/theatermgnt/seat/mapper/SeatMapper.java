@@ -11,10 +11,11 @@ import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface SeatMapper {
+
     Seat toSeat(SeatCreationRequest request);
 
-    @Mapping(source = "seatType.typeName", target = "seatTypeName")
-    @Mapping(source = "room.name", target = "roomName")
+    @Mapping(source = "seatType.typeName", target = "seatType")
+    @Mapping(target = "seatName", expression = "java(seat.getRowChair() + seat.getSeatNumber())")
     SeatResponse toSeatResponse(Seat seat);
 
     void updateSeat(@MappingTarget Seat seat, SeatUpdateRequest request);

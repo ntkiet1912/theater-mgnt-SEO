@@ -19,7 +19,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -31,29 +36,40 @@ public class SeatService {
     SeatTypeRepository seatTypeRepository;
     SeatMapper seatMapper;
 
-    @Transactional
-    public SeatResponse createSeat(SeatCreationRequest request) {
-        Room room = roomRepository.findById(request.getRoomId())
-                .orElseThrow(() -> new AppException(ErrorCode.ROOM_NOT_EXISTED));
-
-        SeatType seatType = seatTypeRepository.findById(request.getSeatTypeId())
-                .orElseThrow(() -> new AppException(ErrorCode.SEATTYPE_NOT_EXISTED));
-
-        if (seatRepository.existsByRowChairAndSeatNumberAndRoomId(
-                request.getRowChair(), request.getSeatNumber(), request.getRoomId())) {
-            throw new AppException(ErrorCode.SEAT_EXISTED);
+    // This method used to create seats for a specific room, not use in controller
+    public List<Seat> createSeatsForRoom(Room room, List<SeatCreationRequest> seatRequests) {
+        if(seatRequests == null || seatRequests.isEmpty()) {
+            return new ArrayList<>();
         }
+        // Get all seat types used in the layout
+        Set<String> seatTypeIds = seatRequests.stream()
+                .map(SeatCreationRequest::getSeatTypeId)
+                .collect(Collectors.toSet());
 
-        Seat seat = seatMapper.toSeat(request);
-        seat.setRoom(room);
-        seat.setSeatType(seatType);
+        // Query seat types from the database
+        List<SeatType> seatTypes = seatTypeRepository.findAllById(seatTypeIds);
 
-        Seat savedSeat = seatRepository.save(seat);
+        // Convert to map for easy access
+        Map<String, SeatType> seatTypeMap = seatTypes.stream()
+                .collect(Collectors.toMap(SeatType::getId, Function.identity()));
 
-        room.setTotalSeats(room.getTotalSeats() + 1);
-        roomRepository.save(room);
+        // Map requests to Seat entities
+        List<Seat> seatsToSave = new ArrayList<>();
+        for(SeatCreationRequest seatRequest : seatRequests) {
+            SeatType seatType = seatTypeMap.get(seatRequest.getSeatTypeId());
 
-        return seatMapper.toSeatResponse(savedSeat);
+            if(seatType == null) {
+                throw new AppException(ErrorCode.SEATTYPE_NOT_EXISTED);
+            }
+            Seat seat = Seat.builder()
+                    .rowChair(seatRequest.getRowChair())
+                    .seatNumber(seatRequest.getSeatNumber())
+                    .seatType(seatType)
+                    .room(room)
+                    .build();
+            seatsToSave.add(seat);
+        }
+        return seatRepository.saveAll(seatsToSave);
     }
 
     public List<SeatResponse> getSeatsByRoom(String roomId) {

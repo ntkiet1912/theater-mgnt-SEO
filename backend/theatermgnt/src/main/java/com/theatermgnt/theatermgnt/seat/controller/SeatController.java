@@ -22,12 +22,12 @@ import java.util.List;
 public class SeatController {
     SeatService seatService;
 
-    @PostMapping
-    ApiResponse<SeatResponse> createSeat(@RequestBody @Valid SeatCreationRequest request) {
-        return ApiResponse.<SeatResponse>builder()
-                .result(seatService.createSeat(request))
-                .build();
-    }
+//    @PostMapping
+//    ApiResponse<SeatResponse> createSeat(@RequestBody @Valid SeatCreationRequest request) {
+//        return ApiResponse.<SeatResponse>builder()
+//                .result(seatService.createSeat(request))
+//                .build();
+//    }
 
     @GetMapping("/room/{roomId}")
     ApiResponse<List<SeatResponse>> getSeatsByRoom(@PathVariable String roomId) {

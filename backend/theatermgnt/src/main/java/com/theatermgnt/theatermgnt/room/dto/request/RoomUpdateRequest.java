@@ -17,4 +17,6 @@ public class RoomUpdateRequest {
 
     @NotNull
     RoomType roomType;
+
+    String status;
 }

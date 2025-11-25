@@ -17,9 +17,6 @@ public class SeatCreationRequest {
     @NotNull(message = "Seat number is required")
     Integer seatNumber;
 
-    @NotBlank(message = "Room ID is required")
-    String roomId;
-
     @NotBlank(message = "Seat type ID is required")
     String seatTypeId;
 }
