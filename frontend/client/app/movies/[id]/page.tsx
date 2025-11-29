@@ -7,6 +7,8 @@ import { ChevronLeft, Clock } from "lucide-react"
 import { showtimes } from "@/lib/mock-data"
 import type { Showtime } from "@/lib/types"
 import { getMovieById, mapMovieForDisplay } from "@/lib/api-movie"
+import { MovieSchema } from "@/components/movie-schema"
+import { ShowtimeSchema } from "@/components/showtime-schema"
 
 export default function MovieDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params)
@@ -78,7 +80,14 @@ export default function MovieDetailPage({ params }: { params: Promise<{ id: stri
   }
 
   return (
-    <div className="min-h-screen bg-background dark:bg-slate-950 pt-20">
+    <>
+      {/* SEO: Structured Data */}
+      {movie && <MovieSchema movie={movie} />}
+      {movie && movieShowtimes.map((showtime) => (
+        <ShowtimeSchema key={showtime.id} movie={movie} showtime={showtime} />
+      ))}
+
+      <div className="min-h-screen bg-background dark:bg-slate-950 pt-20">
       {/* Movie Hero */}
       <div className="relative h-96 md:h-[500px] overflow-hidden bg-gradient-to-b from-purple-900/20 to-background dark:to-slate-950">
         <img
@@ -244,6 +253,7 @@ export default function MovieDetailPage({ params }: { params: Promise<{ id: stri
         )}
       </div>
     </div>
+    </>
   )
 }
 
